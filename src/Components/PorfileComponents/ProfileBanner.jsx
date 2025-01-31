@@ -16,7 +16,7 @@ export const ProfileBanner = ({ usuario }) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center bg-gray-100">
+    <div className="w-full flex flex-col items-center">
     {/* banner */}
     <div
       className="w-full h-40 sm:h-56 md:h-64 lg:h-50 bg-gray-700 bg-cover bg-center"
@@ -24,13 +24,13 @@ export const ProfileBanner = ({ usuario }) => {
     ></div>
 
     {/* contenedor de perfil */}
-    <div className="w-full max-w-4xl bg-gray-100 rounded-lg shadow-md -mt-16 p-6 flex flex-col items-center">
+    <div className="w-full gap-7 max-w-4xl bg-gray-100 rounded-lg shadow-md -mt-16 p-6 flex flex-col items-center">
       {/* imagen de perfil */}
       <button className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden">
         <img src={usuario.photo} alt={`${usuario.name} ${usuario.lastname}`} className="w-full h-full object-cover" />
       </button>
 
-      {/* información del usuario */}
+      {/* info del usuario */}
       <div className="text-center mt-4">
         <h3 className="text-2xl font-bold text-gray-900">{usuario.name} {usuario.lastname}</h3>
         <p className="text-gray-500 text-lg">@{usuario.username}</p>

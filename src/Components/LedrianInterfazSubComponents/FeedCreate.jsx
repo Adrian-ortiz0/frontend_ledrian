@@ -2,7 +2,7 @@ import React from "react";
 
 export const FeedCreate = () => {
   return (
-    <div className="w-[70%] h-full flex flex-col items-center bg-[#030303] py-10">
+    <div className="w h-full flex flex-col items-center bg-[#030303]">
       <div className="w-[100%] flex flex-col items-center justify-center rounded-xl bg-[#222020] gap-6 shadow-lg p-8">
         <div className="w-full flex items-center justify-center gap-8">
           <img src="/public/profile_icon.png" alt="Profile Icon" width={70} height={70} />
