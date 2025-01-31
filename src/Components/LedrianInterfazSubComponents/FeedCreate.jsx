@@ -2,8 +2,8 @@ import React from "react";
 
 export const FeedCreate = () => {
   return (
-    <div className="w h-full flex flex-col items-center bg-gray-700">
-      <div className="w-[100%] flex flex-col items-center justify-center rounded-xl bg-gray-800  gap-6 shadow-lg p-8">
+    <div className="w h-full flex flex-col items-center">
+      <div className="w-[100%] flex flex-col items-center justify-center rounded-3xl bg-gray-800  gap-6 shadow-lg p-8">
         <div className="w-full flex items-center justify-center gap-8">
           <img src="/public/profile_icon.png" alt="Profile Icon" width={70} height={70} />
           <textarea

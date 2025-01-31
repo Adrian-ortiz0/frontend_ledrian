@@ -53,46 +53,48 @@ export const CreateModal = ({ onClose, usuario }) => {
   };
 
   return (
-    <div className='modal-overlay'>
-      <div className='modal-content'>
-        <div className='modal-header'>
-          <h2>Create a new post</h2>
-          <IconButton onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <form onSubmit={handleSubmit}>
-          <div className='image-upload'>
-            {image ? (
-              <img src={image} alt='Preview' className='image-preview' />
-            ) : (
-              <label htmlFor='file-upload' className='upload-label'>
-                <span>Upload an image</span>
-                <input
-                  id='file-upload'
-                  type='file'
-                  accept='image/*'
-                  onChange={handleImageChange}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            )}
-          </div>
-          <textarea
-            id='caption-textarea'
-            placeholder='Write a caption...'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <button
-            id='publish-button'
-            type='submit'
-            disabled={!image}
-          >
-            Publish
-          </button>
-        </form>
-      </div>
+    <div className='fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[9999]'>
+  <div className='bg-white rounded-lg shadow-lg w-[500px] max-w-[90%]'>
+    <div className='flex justify-between items-center p-4 border-b border-gray-200'>
+      <h2 className='text-lg font-semibold'>Create a new post</h2>
+      <IconButton onClick={onClose}>
+        <CloseIcon />
+      </IconButton>
     </div>
+    <form onSubmit={handleSubmit}>
+      <div className='flex justify-center items-center h-[300px] bg-gray-50 border-b border-gray-200'>
+        {image ? (
+          <img src={image} alt='Preview' className='max-w-full max-h-[300px] object-contain' />
+        ) : (
+          <label htmlFor='file-upload' className='cursor-pointer text-blue-500 font-semibold'>
+            <span>Upload an image</span>
+            <input
+              id='file-upload'
+              type='file'
+              accept='image/*'
+              onChange={handleImageChange}
+              className='hidden'
+            />
+          </label>
+        )}
+      </div>
+      <textarea
+        id='caption-textarea'
+        placeholder='Write a caption...'
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className='w-full h-[100px] p-4 border-none outline-none resize-none font-inherit text-sm border-b border-gray-200'
+      />
+      <button
+        id='publish-button'
+        type='submit'
+        disabled={!image}
+        className='w-full p-3 bg-blue-500 text-white border-none rounded-b-lg text-sm font-semibold cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed'
+      >
+        Publish
+      </button>
+    </form>
+  </div>
+</div>
   );
 };

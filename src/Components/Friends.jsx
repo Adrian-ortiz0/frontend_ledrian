@@ -10,11 +10,11 @@ export const Friends = () => {
   return (
 
     <section className='bg-gray-900  h-screen flex'>
-      <AsideProfile usuario={usuario} />
       <section className='flex h-screen'>
         <FriendsFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
       </section>
+      <AsideProfile usuario={usuario} />
     </section>
 
   );
