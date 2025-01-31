@@ -541,6 +541,12 @@
   place-items: center;
 }
 
+.post_card{
+  width: 200px;
+  height: 200px;
+}
+
+
 .profile::-webkit-scrollbar {
   width: 8px;
 }
