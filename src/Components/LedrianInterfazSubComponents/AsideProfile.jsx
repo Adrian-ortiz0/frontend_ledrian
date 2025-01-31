@@ -86,6 +86,12 @@ export const AsideProfile = ({ usuario }) => {
           text="Settings" 
           navigateTo="/settings" 
         />
+        <NavButton 
+          imagePath="/public/setting_icon.png" 
+          altText="Log out Icon" 
+          text="Log out" 
+          navigateTo="/login" 
+        />
       </div>
 
       {isCreateModalOpen && (
