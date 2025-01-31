@@ -8,6 +8,7 @@ import { ProfileEdit } from "./Components/PorfileComponents/ProfileEdit";
 import { Friends } from "./Components/Friends";
 import { Settings } from "./Components/Settings";
 import { UserProvider } from "./UserContext";
+import { Messages } from "./Components/Messages";
 
 export const App = () => {
   return (
@@ -22,6 +23,7 @@ export const App = () => {
           <Route path="/profile/edit" element={<ProfileEdit />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/messages" element={<Messages />} />
         </Routes>
       </Router>
     </UserProvider>
