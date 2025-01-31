@@ -39,7 +39,7 @@ const SuggestionCard = ({ profileImage, firstName, lastName, username }) => {
 
 export const Suggestions = () => {
   return (
-    <div className='suggestions-container'>
+    <div className=''>
        <SuggestionCard 
         profileImage="/public/profile_icon.png"
         firstName="Leonardo"
