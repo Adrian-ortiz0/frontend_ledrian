@@ -36,6 +36,12 @@ export const AsideProfile = ({ usuario }) => {
     setIsCreateModalOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("authToken");
+    navigate("/login");
+  };
+
   return (
     <aside className="aside_profile-container w-[15%] h-full flex flex-col justify-between items-center bg-gray-700 text-gray-200">
       <div className="flex flex-col w-full justify-around">
@@ -90,7 +96,7 @@ export const AsideProfile = ({ usuario }) => {
           imagePath="/public/setting_icon.png" 
           altText="Log out Icon" 
           text="Log out" 
-          navigateTo="/login" 
+          onClick={handleLogout} 
         />
       </div>
 

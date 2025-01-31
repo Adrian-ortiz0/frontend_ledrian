@@ -181,7 +181,7 @@
   display: flex;
   align-items: center;
   width: 100vw;
-  height: 90%;
+  height: 90vh;
 }
 
 /* AsideProfile */
@@ -1007,4 +1007,34 @@
   max-width: 100%;
   max-height: 300px;
   object-fit: contain;
+}
+
+/* Messages */
+
+.messages{
+  background-color: #f5f5f5;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aside_only-icons{
+  width: 7%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #171616;
+}
+
+.aside_chats-container {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #171616;
 }
