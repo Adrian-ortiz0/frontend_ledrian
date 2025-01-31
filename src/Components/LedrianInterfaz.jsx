@@ -13,7 +13,6 @@ export const LedrianInterfaz = () => {
 
   return (
     <main className='bg-white h-screen flex-col'>
-      <HeaderNav usuario={usuario}/>
       <section className='content'>
         <AsideProfile usuario={usuario} />
         <Feed usuario={usuario} />
