@@ -12,7 +12,7 @@ export const LedrianInterfaz = () => {
   console.log(usuario);
 
   return (
-    <main className='ledrianInterfaz'>
+    <main className='bg-white h-screen flex-col'>
       <HeaderNav usuario={usuario}/>
       <section className='content'>
         <AsideProfile usuario={usuario} />
