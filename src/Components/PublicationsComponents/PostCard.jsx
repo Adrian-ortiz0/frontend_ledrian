@@ -2,8 +2,8 @@ import React from 'react'
 
 export const PostCard = ({img, description, username}) => {
   return (
-    <div>
-        1
+    <div className='post_card'>
+        <img src={img} alt="" />
     </div>
   )
 }
