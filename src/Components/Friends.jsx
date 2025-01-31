@@ -6,15 +6,16 @@ import { SuggestionsSection } from "./LedrianInterfazSubComponents/SuggestionsSe
 import { useUser } from "../UserContext";
 
 export const Friends = () => {
-  const {usuario} = useUser();
+  const { usuario } = useUser();
   return (
-    <section className="friends_container">
-        <HeaderNav usuario={usuario} />
-      <section className="content">
-        <AsideProfile usuario={usuario} />
+
+    <section className='bg-gray-900  h-screen flex'>
+      <AsideProfile usuario={usuario} />
+      <section className='flex h-screen'>
         <FriendsFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
       </section>
     </section>
+
   );
 };
