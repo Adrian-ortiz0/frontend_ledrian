@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export const FriendsCard = ({ usuario }) => {
-  const [followers, setFollowers] = useState(usuario.followers);
+  const [followers, setFollowers] = useState(usuario.followersIds);
 
   return (
     <div>

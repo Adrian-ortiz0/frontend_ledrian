@@ -38,16 +38,16 @@ export const ProfileBanner = ({ usuario }) => {
 
       {/* follows */}
       <div className="flex justify-around w-full max-w-md mt-6 text-center">
-        <div className="flex flex-col text-gray-700">
+        {/* <div className="flex flex-col text-gray-700">
           <span className="text-xl font-semibold">{usuario.publications.length}</span>
           <span className="text-sm text-gray-500">Posts</span>
-        </div>
+        </div> */}
         <div className="flex flex-col text-gray-700">
-          <span className="text-xl font-semibold">{usuario.followers.length}</span>
+          <span className="text-xl font-semibold">{usuario.followersIds.length}</span>
           <span className="text-sm text-gray-500">Followers</span>
         </div>
         <div className="flex flex-col text-gray-700">
-          <span className="text-xl font-semibold">{usuario.following.length}</span>
+          <span className="text-xl font-semibold">{usuario.followingIds.length}</span>
           <span className="text-sm text-gray-500">Following</span>
         </div>
       </div>
