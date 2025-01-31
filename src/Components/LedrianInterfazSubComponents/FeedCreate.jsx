@@ -2,8 +2,8 @@ import React from "react";
 
 export const FeedCreate = () => {
   return (
-    <div className="w h-full flex flex-col items-center bg-[#030303]">
-      <div className="w-[100%] flex flex-col items-center justify-center rounded-xl bg-[#222020] gap-6 shadow-lg p-8">
+    <div className="w h-full flex flex-col items-center bg-[#030303] bg-gray-700">
+      <div className="w-[100%] flex flex-col items-center justify-center rounded-xl bg-[#222020] bg-gray-800  gap-6 shadow-lg p-8">
         <div className="w-full flex items-center justify-center gap-8">
           <img src="/public/profile_icon.png" alt="Profile Icon" width={70} height={70} />
           <textarea
@@ -20,7 +20,7 @@ export const FeedCreate = () => {
               <img src="/public/emoji_icon.png" alt="Emoji Icon" width={25} height={25} />
             </button>
           </div>
-          <button className="bg-blue-500 text-white rounded-lg px-6 py-3 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-600">
+          <button className="bg-purple-600 text-white rounded-lg px-6 py-3 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-00">
             Post
           </button>
         </div>
