@@ -1038,3 +1038,8 @@
   align-items: center;
   background-color: #171616;
 }
+.chat_container{
+  width: 70%;
+  background-color: #030303;
+  height: 100%;
+}
