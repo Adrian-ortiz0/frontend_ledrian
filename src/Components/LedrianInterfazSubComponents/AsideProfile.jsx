@@ -45,6 +45,9 @@ export const AsideProfile = ({ usuario }) => {
   return (
     <aside className="aside_profile-container w-[15%] h-full flex flex-col justify-between items-center bg-gray-700 text-gray-200">
       <div className="flex flex-col w-full justify-around">
+        
+      <span className="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 italic font-bold pl-[2vw]">Ledrian</span>
+        
         <NavButton 
           imagePath="/public/home_icon.png" 
           altText="Home Icon" 

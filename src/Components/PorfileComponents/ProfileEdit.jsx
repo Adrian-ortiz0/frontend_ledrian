@@ -16,7 +16,7 @@ export const ProfileEdit = () => {
       <section className="content">
         <AsideProfile usuario={usuario} />
         <ProfileEditForm usuario={usuario} />
-        <SuggestionsSection usuario={usuario} />
+        {/*<SuggestionsSection usuario={usuario} />*/}
       </section>
     </div>
   );
