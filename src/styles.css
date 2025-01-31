@@ -1021,13 +1021,13 @@
 }
 
 .aside_only-icons{
-  width: 7%;
+  width: 5%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background-color: #171616;
+  background-color: #1e2939;
 }
 
 .aside_chats-container {
@@ -1037,7 +1037,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background-color: #171616;
+  background-color: #101828;
 }
 .chat_container{
   width: 70%;
