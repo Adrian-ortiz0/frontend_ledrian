@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 
 
-const SuggestionCard = ({ profileImage, firstName, lastName, username, onFollow }) => {
+const SuggestionCard = ({ profileImage, firstName, lastName, username }) => {
+    const [isFollowing, setIsFollowing] = useState(false);
+  
+    const handleFollow = () => {
+      setIsFollowing(!isFollowing); 
+    };
+  
     return (
-      <div className="flex items-center justify-center gap-5 bg-transparent p-3 rounded-xl duration-300">
-        {/* Imagen de perfil */}
+      <div className="flex items-center justify-between gap-1 p-2">
         <img 
           src={profileImage} 
           alt={`${firstName} ${lastName}`} 
@@ -12,54 +17,46 @@ const SuggestionCard = ({ profileImage, firstName, lastName, username, onFollow 
           height={40} 
           className="rounded-full border-2 border-blue-500" 
         />
-        
-        {/* Información del usuario */}
         <div className="flex flex-col">
           <p className="text-white text-sm">{firstName} {lastName}</p>
           <label className="text-gray-400 text-sm">@{username}</label>
         </div>
-        
-        {/* Botón Follow */}
         <button 
-          onClick={onFollow} 
-          className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105"
+          onClick={handleFollow} 
+          className={`
+            w-24 px-4 py-2 rounded-full text-sm font-semibold transition duration-300 
+            ${isFollowing ? 
+              'bg-red-600 text-white hover:bg-red-700 border-none' : 
+              'bg-blue-500 text-white hover:bg-blue-600 border border-blue-500'}
+            focus:outline-none hover:scale-105`}
         >
-          Follow
+          {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
       </div>
     );
   };
+  
 
 export const Suggestions = () => {
-
-    const [following, setFollowing] = useState(false);
-
-    const handleFollow = () => {
-      setFollowing(!following);  // Cambia el estado de seguir/no seguir
-      console.log(following ? 'Unfollowed' : 'Followed');
-    };
   return (
     <div className='suggestions-container'>
- <SuggestionCard 
+       <SuggestionCard 
         profileImage="/public/profile_icon.png"
         firstName="Leonardo"
         lastName="Gonzales"
         username="Leonardog"
-        onFollow={handleFollow}
       />
- <SuggestionCard 
+       <SuggestionCard 
         profileImage="/public/profile_icon.png"
         firstName="Leonardo"
         lastName="Gonzales"
         username="Leonardog"
-        onFollow={handleFollow}
       />
- <SuggestionCard 
+       <SuggestionCard 
         profileImage="/public/profile_icon.png"
         firstName="Leonardo"
         lastName="Gonzales"
         username="Leonardog"
-        onFollow={handleFollow}
       />
     </div>
   )

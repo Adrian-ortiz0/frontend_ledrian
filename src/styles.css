@@ -317,8 +317,11 @@
 .suggestions-container{
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 95%;
   height: auto;
+  border: 5px black solid;
+  border-radius: 14px;
+  padding: 10px 5px;
 }
 
 .suggestions-container-card{
