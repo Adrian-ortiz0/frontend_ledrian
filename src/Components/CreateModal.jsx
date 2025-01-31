@@ -12,6 +12,7 @@ export const CreateModal = ({ onClose, usuario }) => {
     photo: '',
     username: usuario.username,
     date: new Date().toISOString(),
+    publisherId: usuario.id
   });
 
   const handleImageChange = (e) => {
@@ -34,6 +35,7 @@ export const CreateModal = ({ onClose, usuario }) => {
     data.append('photo', formData.photo); 
     data.append('username', formData.username);
     data.append('date', formData.date);
+    data.append("publisherId", formData.publisherId)
 
     AxiosConfiguration.post('publications/upload', data, {
       headers: {
