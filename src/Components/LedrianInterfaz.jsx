@@ -13,11 +13,11 @@ export const LedrianInterfaz = () => {
 
   return (
     <main className='bg-gray-900  h-screen flex'>
-        <AsideProfile usuario={usuario} />
       <section className='flex h-screen'>
         <Feed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
       </section>
+      <AsideProfile usuario={usuario} />
     </main>
   )
 }

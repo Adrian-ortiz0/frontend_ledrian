@@ -12,10 +12,9 @@ export const Profile = () => {
   return (
 
     <div className=''>
-        {/*<HeaderNav usuario={usuario}/>*/}
-      <AsideProfile usuario={usuario} />
         <ProfileFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
+      <AsideProfile usuario={usuario} />
       </div>
   )
 }
