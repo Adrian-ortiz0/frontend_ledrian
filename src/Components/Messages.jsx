@@ -12,8 +12,7 @@ export const Messages = () => {
 
   return (
     <div className='bg-white h-screen flex-col'>
-        <HeaderNav usuario={usuario} />
-        <section className='content'>
+        <section className='flex h-screen'>
             <AsideOnlyIcons usuario={usuario} />
             <AsideContacts usuario={usuario} />
             <ChatContainer usuario={usuario} />
