@@ -12,16 +12,13 @@ export const ProfilePosts = ({ usuario }) => {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
-
     if (!response.ok) {
       console.error(`Error cargando imagen: ${imageUrl}`);
       return null;
     }
-
     const imageBlob = await response.blob();
     return URL.createObjectURL(imageBlob);
   };
-
   const fetchOwnPosts = async () => {
 
     try {
