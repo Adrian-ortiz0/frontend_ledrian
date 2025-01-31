@@ -5,7 +5,7 @@ import { ProfilePosts } from './ProfilePosts'
 
 export const ProfileFeed = ({usuario}) => {
   return (
-    <div className='profile'>
+    <div className='flex-col w-[85%]'>
         <ProfileBanner usuario={usuario} />
         <ProfilePosts usuario={usuario} />
     </div>

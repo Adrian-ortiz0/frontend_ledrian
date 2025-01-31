@@ -12,10 +12,10 @@ export const Profile = () => {
   return (
     <section className='profile_container'>
         <HeaderNav usuario={usuario}/>
-        <section className='content'>
+        <section className='flex h-[90%]'>
             <AsideProfile usuario={usuario} />
             <ProfileFeed usuario={usuario} />
-            <SuggestionsSection usuario={usuario} />
+            {/*<SuggestionsSection usuario={usuario} />*/}
         </section>
     </section>
   )
