@@ -9,7 +9,7 @@ export const FriendsCard = ({ usuario }) => {
         <p className="text-white" >No friends</p>
       ) : (
         followers.map((follower) => (
-          <div className="friends_card" key={follower.username}>
+          <div className="friends_card" key={follower.username} >
             <img src="/public/profile_icon.png" alt="" width={30} height={30} />
             <div>
               <p>{follower.name}</p>

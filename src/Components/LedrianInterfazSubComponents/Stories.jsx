@@ -8,10 +8,7 @@ const Minihistory = (size) => {
 
 export const Stories = () => {
   return (
-    <div className='flex w-full '>
-      <Minihistory/>
-      <Minihistory/>
-      <Minihistory/>
+    <div className='flex w-full justify-evenly'>
       <Minihistory/>
       <Minihistory/>
       <Minihistory/>
