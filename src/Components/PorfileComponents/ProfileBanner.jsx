@@ -16,69 +16,64 @@ export const ProfileBanner = ({ usuario }) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center bg-[#f5f5f5]">
-      {/* Banner */}
-      <div className="w-full h-[25vh] bg-[#746c6c] bg-cover bg-center "
-        style={{ backgroundImage: `url(${usuario.banner})` }}>
+    <div className="w-full flex flex-col items-center bg-gray-100">
+    {/* banner */}
+    <div
+      className="w-full h-40 sm:h-56 md:h-64 lg:h-50 bg-gray-700 bg-cover bg-center"
+      style={{ backgroundImage: `url(${usuario.banner})` }}
+    ></div>
+
+    {/* contenedor de perfil */}
+    <div className="w-full max-w-4xl bg-gray-100 rounded-lg shadow-md -mt-16 p-6 flex flex-col items-center">
+      {/* imagen de perfil */}
+      <button className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden">
+        <img src={usuario.photo} alt={`${usuario.name} ${usuario.lastname}`} className="w-full h-full object-cover" />
+      </button>
+
+      {/* información del usuario */}
+      <div className="text-center mt-4">
+        <h3 className="text-2xl font-bold text-gray-900">{usuario.name} {usuario.lastname}</h3>
+        <p className="text-gray-500 text-lg">@{usuario.username}</p>
       </div>
 
-      {/* Profile Info */}
-      <div className="flex w-full">
-        <div className="w-full h-full bg-[#1c1c1c] rounded-b-lg flex shadow-lg flex-col">
-          <button className="w-full flex justify-center items-center">
-            <img
-              src={usuario.photo}
-              alt={`${usuario.name} ${usuario.lastname}`}
-              className="w-45 h-45 rounded-full border-4 border-white"
-            />
-          </button>
-          <div className="flex-col items-center justify-center text-center text-white w-full">
-            {/* Nombre de usuario y su handle */}
-            <h3 className="text-3xl font-bold mb-2">{usuario.name} {usuario.lastname}</h3>
-            <p className="text-gray-400 text-lg">@{usuario.username}</p>
-          </div>
+      {/* follows */}
+      <div className="flex justify-around w-full max-w-md mt-6 text-center">
+        <div className="flex flex-col text-gray-700">
+          <span className="text-xl font-semibold">{usuario.publications.length}</span>
+          <span className="text-sm text-gray-500">Posts</span>
         </div>
-
-        <div className="flex justify-center items-center gap-8 w-full text-3xl text-gray-400 bg-black mb-4 ">
-          <div className="flex flex-col">
-            <span className="text-center">{usuario.publications.length}</span>
-            <span> posts</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-center">{usuario.followers.length}</span>
-            <span>followers</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-center">{usuario.following.length}</span>
-            <span> following</span>
-          </div>
+        <div className="flex flex-col text-gray-700">
+          <span className="text-xl font-semibold">{usuario.followers.length}</span>
+          <span className="text-sm text-gray-500">Followers</span>
+        </div>
+        <div className="flex flex-col text-gray-700">
+          <span className="text-xl font-semibold">{usuario.following.length}</span>
+          <span className="text-sm text-gray-500">Following</span>
         </div>
       </div>
-      <div className="text-white w-full flex-col items-center mt-6">
-        <span className="text-gray-300 text-base max-w-3xl text-center text-gray-200 text-sm mt-2">{usuario.bio} {`hola soy un ser humano que le importa.`}</span>
 
-        {/* Botones de Acción */}
-        {/*<div className="flex gap-8 mt-6">
-            <button
-              onClick={() => navigate("edit")}
-              className="bg-blue-500 text-white py-2 px-10 rounded-full hover:bg-blue-600 transition duration-300"
-            >
-              Edit Profile
-            </button>
-            <button
-              onClick={handleOpenModal}
-              className="bg-amber-800 text-white py-2 px-10 rounded-full hover:bg-green-600 transition duration-300"
-            >
-              Add Post
-            </button>
-  </div>*/}
+      {/* biografia */}
+      <p className="text-gray-700 text-sm text-center mt-4 max-w-2xl">{usuario.bio || "Hola, soy un ser humano que le importa."}</p>
+
+      {/* botones de accion */}
+      <div className="flex gap-4 mt-6">
+        <button
+          onClick={() => navigate("edit")}
+          className="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600 transition duration-300"
+        >
+          Edit Profile
+        </button>
+        <button
+          onClick={handleOpenModal}
+          className="bg-green-500 text-white py-2 px-6 rounded-full hover:bg-green-600 transition duration-300"
+        >
+          Add Post
+        </button>
       </div>
-
-
-      {/* Create Post Modal */}
-      {isCreateModalOpen && (
-        <CreateModal onClose={handleCloseModal} usuario={usuario} />
-      )}
     </div>
+
+    {/* modal pa crear */}
+    {isCreateModalOpen && <CreateModal onClose={handleCloseModal} usuario={usuario} />}
+  </div>
   );
 };
