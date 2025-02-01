@@ -1,23 +1,49 @@
 import React, { useState } from 'react';
+import AxiosConfiguration from '../../AxiosConfiguration';
 
-export const SearchInput = ({ placeholder = 'Search...', onSearch }) => {
+export const SearchInput = ({ placeholder = 'Search...', onSelectUser }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (event) => {
-    setSearchTerm(event.target.value);
-    if (onSearch) {
-      onSearch(event.target.value);
+    const value = event.target.value;
+    setSearchTerm(value);
+
+    if (value.trim() === '') {
+      setSearchResults([]); 
+      return;
     }
+
+    setIsLoading(true);
+
+    const token = localStorage.getItem('authToken');
+
+    AxiosConfiguration.get(`users/search?query=${value}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    })
+      .then((response) => {
+        setSearchResults(response.data); 
+      })
+      .catch((error) => {
+        console.error('Error buscando usuarios:', error);
+        setSearchResults([]); 
+      })
+      .finally(() => {
+        setIsLoading(false); 
+      });
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && onSearch) {
-      onSearch(searchTerm);
-    }
+  const handleSelectUser = (user) => {
+    setSearchTerm('');
+    setSearchResults([]); 
+    onSelectUser(user);
   };
 
   return (
-    <div className='flex justify-center items-center h-[6vh] gap-3 pr-[2vw]'>
+    <div className='flex justify-center items-center h-[6vh] gap-3 pr-[2vw] relative'>
       <img 
         src="/public/search.png" 
         alt="Search icon" 
@@ -32,9 +58,40 @@ export const SearchInput = ({ placeholder = 'Search...', onSearch }) => {
         placeholder={placeholder}
         value={searchTerm}
         onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
         aria-label="Search input"
       />
+
+      {searchResults.length > 0 && (
+        <div className="absolute top-[6vh] w-full max-w-[400px] bg-white rounded-lg shadow-lg z-10">
+          {searchResults.map((user) => (
+            <div
+              key={user.id}
+              className="p-3 hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleSelectUser(user)}
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src={user.photo}
+                  alt={`${user.name} ${user.lastname}`}
+                  className="w-10 h-10 rounded-full"
+                />
+                <div>
+                  <p className="font-semibold text-gray-900">
+                    {user.name} {user.lastname}
+                  </p>
+                  <p className="text-sm text-gray-500">@{user.username}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="absolute top-[6vh] w-full max-w-[400px] bg-white rounded-lg shadow-lg z-10 p-3">
+          <p className="text-gray-700">Buscando...</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { Friends } from "./Components/Friends";
 import { Settings } from "./Components/Settings";
 import { UserProvider } from "./UserContext";
 import { Messages } from "./Components/Messages";
+import { OtherProfile } from "./Components/OtherProfile";
 
 export const App = () => {
   return (
@@ -24,6 +25,7 @@ export const App = () => {
           <Route path="/friends" element={<Friends />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/user/:id" element={<OtherProfile />} />
         </Routes>
       </Router>
     </UserProvider>

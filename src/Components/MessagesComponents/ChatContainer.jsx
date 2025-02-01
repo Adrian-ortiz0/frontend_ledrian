@@ -7,7 +7,7 @@ export const ChatContainer = ({ usuario }) => {
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <div className="flex items-center">
           <img
-            src={usuario.avatarUrl} 
+            src={usuario.photo} 
             alt="Profile"
             className="w-10 h-10 rounded-full"
           />
