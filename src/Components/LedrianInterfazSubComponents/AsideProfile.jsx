@@ -54,6 +54,12 @@ export const AsideProfile = ({ usuario }) => {
           navigateTo="/home"
         />
         <NavButton
+          imagePath="/public/notification_icon.png"
+          altText="Messages Icon"
+          text="Notifications"
+          navigateTo="/home"
+        />
+        <NavButton
           imagePath="/public/friends_icon.png"
           altText="Friends Icon"
           text="Followers"
@@ -77,12 +83,7 @@ export const AsideProfile = ({ usuario }) => {
           text="Messages"
           navigateTo="/messages"
         />
-        <NavButton
-          imagePath="/public/notification_icon.png"
-          altText="Messages Icon"
-          text="Notifications"
-          navigateTo="/home"
-        />
+        
       </div>
 
       <div className="flex flex-col w-full justify-around">

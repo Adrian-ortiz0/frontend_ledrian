@@ -1083,3 +1083,8 @@
   height: 20%;
   border: 1px solid blue;
 }
+
+.feed_post-container{
+  margin-top: 20px;
+  padding: 20px;
+}
