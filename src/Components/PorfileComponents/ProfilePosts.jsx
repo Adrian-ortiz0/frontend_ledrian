@@ -19,8 +19,8 @@ export const ProfilePosts = ({ usuario }) => {
     const imageBlob = await response.blob();
     return URL.createObjectURL(imageBlob);
   };
-  const fetchOwnPosts = async () => {
 
+  const fetchOwnPosts = async () => {
     try {
       const response = await AxiosConfiguration.get(`publications/user/${usuario.id}`, {
         headers: {
@@ -35,7 +35,13 @@ export const ProfilePosts = ({ usuario }) => {
         }))
       );
 
-      setOwnPosts(postsWithImages);
+      const sortedPosts = postsWithImages.sort((a, b) => {
+        const dateA = new Date(a.date); 
+        const dateB = new Date(b.date); 
+        return dateB - dateA; 
+      });
+
+      setOwnPosts(sortedPosts);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }

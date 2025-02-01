@@ -3,7 +3,7 @@ import AxiosConfiguration from '../../AxiosConfiguration';
 import { FeedPostCard } from './FeedPostCard';
 
 export const FeedPosts = ({ usuario }) => {
-  const [ownPosts, setOwnPosts] = useState([]);
+  const [followingPosts, setFollowingPosts] = useState([]);
 
   const fetchImage = async (photo) => {
     const imageUrl = `http://localhost:8083/api/publications/images/${photo}`;
@@ -20,9 +20,9 @@ export const FeedPosts = ({ usuario }) => {
     return URL.createObjectURL(imageBlob);
   };
 
-  const fetchOwnPosts = async () => {
+  const fetchPostsByUser = async (userId) => {
     try {
-      const response = await AxiosConfiguration.get(`publications/user/${usuario.id}`, {
+      const response = await AxiosConfiguration.get(`publications/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
         },
@@ -35,36 +35,53 @@ export const FeedPosts = ({ usuario }) => {
         }))
       );
 
-      const sortedPosts = postsWithImages.sort((a, b) => {
+      return postsWithImages;
+    } catch (error) {
+      console.error(`Error fetching posts for user ${userId}:`, error);
+      return [];
+    }
+  };
+
+  const fetchFollowingPosts = async () => {
+    try {
+      const postsPromises = usuario.followingIds.map((userId) => fetchPostsByUser(userId));
+      const postsArrays = await Promise.all(postsPromises);
+
+      const allPosts = postsArrays.flat();
+
+      const sortedPosts = allPosts.sort((a, b) => {
         const dateA = new Date(a.date);
-        const dateB = new Date(b.date); 
+        const dateB = new Date(b.date);
         return dateB - dateA; 
       });
 
-      setOwnPosts(sortedPosts);
+      setFollowingPosts(sortedPosts);
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error('Error fetching following posts:', error);
     }
   };
 
   useEffect(() => {
-    fetchOwnPosts();
+    if (usuario.followingIds && usuario.followingIds.length > 0) {
+      fetchFollowingPosts();
+    }
   }, [usuario]);
-
-  console.log(ownPosts);
 
   return (
     <main className='feed_post-container'>
-      {ownPosts.map((ownPost) => (
-        <FeedPostCard
-          key={ownPost.id}
-          username={usuario.username}
-          profilePic={usuario.photo}
-          imageUrl={ownPost.photo}
-          likes={25}
-          comments={10}
-        />
-      ))}
+      {followingPosts.length > 0 ? (
+        followingPosts.map((post) => (
+          <FeedPostCard
+            key={post.id}
+            username={post.username}
+            imageUrl={post.photo}
+            likes={post.likes || 25}
+            comments={post.comments || 10} 
+          />
+        ))
+      ) : (
+        <p>No hay publicaciones recientes de los usuarios que sigues.</p>
+      )}
     </main>
   );
 };
