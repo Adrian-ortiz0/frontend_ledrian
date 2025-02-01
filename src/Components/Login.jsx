@@ -13,20 +13,19 @@ export const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Enviar email y password como parámetros en la URL
+    
         AxiosConfiguration.post('login', null, {
             params: { email, password },
         })
             .then((response) => {
                 const { token, id, name, lastname, email, username, photo, bio, followersIds, followingIds, publications } = response.data;
-
+    
                 console.log('Login successful:', response.data);
-
-                // Guardar el token en localStorage
+    
+                localStorage.clear();
+    
                 localStorage.setItem('authToken', token);
-
-                // Actualizar el contexto del usuario con toda la información recibida
+    
                 actualizarUsuario({
                     id,
                     name,
@@ -39,9 +38,9 @@ export const Login = () => {
                     followingIds,
                     publications
                 });
-
+    
                 alert('Bienvenido/a!');
-                navigate('/home'); // Redirigir al home
+                navigate('/home');
             })
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
