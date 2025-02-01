@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import AxiosConfiguration from '../../AxiosConfiguration';
+import { useNavigate } from 'react-router';
 
-export const SearchInput = ({ placeholder = 'Search...', onSelectUser }) => {
+export const SearchInput = ({ placeholder = 'Search...' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const value = event.target.value;
@@ -39,7 +42,7 @@ export const SearchInput = ({ placeholder = 'Search...', onSelectUser }) => {
   const handleSelectUser = (user) => {
     setSearchTerm('');
     setSearchResults([]); 
-    onSelectUser(user);
+    navigate(`../user/${user.id}`)
   };
 
   return (

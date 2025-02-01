@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ProfileFeed } from "./PorfileComponents/ProfileFeed";
 import { SuggestionsSection } from "./LedrianInterfazSubComponents/SuggestionsSection";
 import { AsideProfile } from "./LedrianInterfazSubComponents/AsideProfile";
 import { useUser } from "../UserContext";
@@ -8,6 +7,7 @@ import AxiosConfiguration from "../AxiosConfiguration";
 import { useParams } from "react-router";
 
 export const OtherProfile = () => {
+  const {usuario} = useUser();
   const { id } = useParams();
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +48,7 @@ export const OtherProfile = () => {
   return (
     <div className="">
       <OtherProfileFeed usuario={selectedUser} /> 
-      <SuggestionsSection usuario={selectedUser} />
+      <SuggestionsSection usuario={usuario} />
       <AsideProfile usuario={selectedUser} /> 
     </div>
   );
