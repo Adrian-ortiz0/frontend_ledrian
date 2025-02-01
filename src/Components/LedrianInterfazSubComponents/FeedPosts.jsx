@@ -75,8 +75,10 @@ export const FeedPosts = ({ usuario }) => {
             key={post.id}
             username={post.username}
             imageUrl={post.photo}
-            likes={post.likes || 25}
-            comments={post.comments || 10} 
+            likes={post.likes || 0}
+            comments={post.comments || 0}
+            description={post.description} 
+            date={post.date}
           />
         ))
       ) : (

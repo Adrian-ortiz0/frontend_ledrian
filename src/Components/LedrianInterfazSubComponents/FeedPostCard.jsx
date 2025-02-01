@@ -20,11 +20,24 @@ export const FeedPostCard = ({
   imageUrl,
   likes,
   comments,
+  description,
+  date,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
+  };
+
+  // Función para formatear la fecha en español sin librerías
+  const formatDate = (dateString) => {
+    if (!dateString) return "Fecha desconocida";
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Fecha inválida";
+
+    const options = { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" };
+    return date.toLocaleDateString("es-ES", options);
   };
 
   return (
@@ -41,7 +54,11 @@ export const FeedPostCard = ({
       <CardHeader
         avatar={<Avatar src={profilePic} alt={username} />}
         title={username}
-        subheader={<Typography variant="caption" sx={{ color: '#b0b0b0' }}>Hace 2 horas</Typography>}
+        subheader={
+          <Typography variant="caption" sx={{ color: "#b0b0b0" }}>
+            {formatDate(date)}
+          </Typography>
+        }
       />
 
       <CardMedia component="img" image={imageUrl} alt="Post" />
@@ -62,6 +79,7 @@ export const FeedPostCard = ({
       </CardActions>
 
       <CardContent>
+        <Typography>{description}</Typography>
         <Typography variant="body2" sx={{ color: "#ffffff" }}>
           {likes} Me gusta
         </Typography>
