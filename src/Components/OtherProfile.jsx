@@ -13,6 +13,7 @@ export const OtherProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
   useEffect(() => {
     const token = localStorage.getItem('authToken');
 
@@ -47,9 +48,9 @@ export const OtherProfile = () => {
 
   return (
     <div className="">
-      <OtherProfileFeed usuario={selectedUser} /> 
+      <OtherProfileFeed usuario={selectedUser} otroUsuario={usuario} /> 
       <SuggestionsSection usuario={usuario} />
-      <AsideProfile usuario={selectedUser} /> 
+      <AsideProfile usuario={usuario} /> 
     </div>
   );
 };

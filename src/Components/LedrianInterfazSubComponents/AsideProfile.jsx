@@ -101,7 +101,7 @@ export const AsideProfile = ({ usuario }) => {
           navigateTo="/settings" 
   />*/}
         <NavButton
-          imagePath="/public/setting_icon.png"
+          imagePath="/public/logout_icon.png"
           altText="Log out Icon"
           text="Log out"
           onClick={handleLogout}
