@@ -49,6 +49,8 @@ export const FeedPosts = ({ usuario }) => {
 
       const allPosts = postsArrays.flat();
 
+      console.log(allPosts)
+
       const sortedPosts = allPosts.sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
@@ -82,7 +84,7 @@ export const FeedPosts = ({ usuario }) => {
           />
         ))
       ) : (
-        <p>No hay publicaciones recientes de los usuarios que sigues.</p>
+        <p className='text-white'>No hay publicaciones recientes de los usuarios que sigues.</p>
       )}
     </main>
   );

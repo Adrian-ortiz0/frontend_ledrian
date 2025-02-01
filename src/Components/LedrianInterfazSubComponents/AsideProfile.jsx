@@ -63,7 +63,7 @@ export const AsideProfile = ({ usuario }) => {
           imagePath="/public/friends_icon.png"
           altText="Friends Icon"
           text="Followers"
-          navigateTo="/friends"
+          navigateTo="/myfollowers"
         />
         <NavButton
           imagePath="/public/friends_icon.png"

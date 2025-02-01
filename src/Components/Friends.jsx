@@ -8,7 +8,6 @@ import { useUser } from "../UserContext";
 export const Friends = () => {
   const { usuario } = useUser();
   return (
-
     <section className='bg-gray-900  h-screen flex'>
       <section className='flex h-screen'>
         <FriendsFeed usuario={usuario} />

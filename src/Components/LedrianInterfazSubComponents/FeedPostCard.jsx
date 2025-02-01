@@ -29,7 +29,6 @@ export const FeedPostCard = ({
     setIsLiked(!isLiked);
   };
 
-  // Función para formatear la fecha en español sin librerías
   const formatDate = (dateString) => {
     if (!dateString) return "Fecha desconocida";
 

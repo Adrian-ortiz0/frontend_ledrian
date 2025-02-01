@@ -10,6 +10,8 @@ import { Settings } from "./Components/Settings";
 import { UserProvider } from "./UserContext";
 import { Messages } from "./Components/Messages";
 import { OtherProfile } from "./Components/OtherProfile";
+import { FollowersFeed } from "./Components/FriendsComponents/FollowersFeed";
+import { MyFollowers } from "./Components/MyFollowers";
 
 export const App = () => {
   return (
@@ -26,6 +28,7 @@ export const App = () => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/user/:id" element={<OtherProfile />} />
+          <Route path="/myfollowers" element={<MyFollowers />} />
         </Routes>
       </Router>
     </UserProvider>

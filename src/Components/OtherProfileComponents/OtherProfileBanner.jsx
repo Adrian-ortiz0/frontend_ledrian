@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useUser } from '../../UserContext';
-import AxiosConfiguration from '../../AxiosConfiguration';
+import React, { useState, useEffect } from "react";
+import { useUser } from "../../UserContext";
+import AxiosConfiguration from "../../AxiosConfiguration";
 
 export const OtherProfileBanner = ({ usuario }) => {
   const { usuario: loggedUser, actualizarUsuario } = useUser();
@@ -8,7 +8,11 @@ export const OtherProfileBanner = ({ usuario }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (loggedUser && loggedUser.followingIds && loggedUser.followingIds.includes(usuario.id)) {
+    if (
+      loggedUser &&
+      loggedUser.followingIds &&
+      loggedUser.followingIds.includes(usuario.id)
+    ) {
       setFollow(true);
     } else {
       setFollow(false);
@@ -16,24 +20,22 @@ export const OtherProfileBanner = ({ usuario }) => {
   }, [loggedUser, usuario.id]);
 
   const handleFollow = () => {
-    const authToken = localStorage.getItem('authToken');
+    const authToken = localStorage.getItem("authToken");
     if (!authToken) {
-      alert('No se encontró token de autenticación. Por favor, inicia sesión de nuevo.');
+      alert(
+        "No se encontró token de autenticación. Por favor, inicia sesión de nuevo."
+      );
       return;
     }
-    
-    console.log('Token utilizado:', authToken);
-    
+
+    console.log("Token utilizado:", authToken);
+
     setIsLoading(true);
 
     if (follow) {
       AxiosConfiguration.delete(
         `/follows/unfollow?followerId=${loggedUser.id}&followingId=${usuario.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${authToken}` } }
       )
         .then((response) => {
           setFollow(false);
