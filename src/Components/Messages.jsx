@@ -12,11 +12,9 @@ export const Messages = () => {
     const {usuario} = useUser();
 
   return (
-    <div className='bg-white h-screen flex-col'>
-        <section className='flex h-screen'>
-            <AsideOnlyIcons usuario={usuario} />
+        <section className='flex h-screen w-screen'>
+            {/* <AsideOnlyIcons usuario={usuario} /> */}
             <MessagingContainer usuario={usuario} />
         </section>
-    </div>
   )
 }

@@ -4,7 +4,7 @@ import ChatComponent from './ChatComponent';
 
 export const ChatContainer = ({ usuario, recipient }) => {
     return (
-        <section className="flex flex-col h-screen bg-white border-l border-gray-200 flex-1">
+        <section className="flex flex-col h-screen w-full bg-white border-l justify-between border-gray-200">
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
                 <div className="flex items-center">
                     <img

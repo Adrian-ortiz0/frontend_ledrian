@@ -11,7 +11,7 @@ const MessagingContainer = ({ usuario }) => {
     };
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-screen w-full">
             <ContactList currentUser={usuario} onSelectContact={handleSelectContact} />
             {selectedContact ? (
                 <ChatContainer usuario={usuario} recipient={selectedContact} />
