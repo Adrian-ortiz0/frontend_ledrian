@@ -72,13 +72,13 @@ const ChatComponent = ({ currentUser, recipientId }) => {
 
     return (
         <>
-            <div className="flex flex-col overflow-y-auto p-4">
+            <div className="flex flex-col gap-1 overflow-y-auto p-4">
                 {messages.map((message, index) => (
                     <div key={index} className={`flex items-start ${message.senderId === currentUser.id ? 'justify-end' : ''}`}>
                         {message.senderId !== currentUser.id && (
                             <img src={message.senderPhoto || 'default-avatar.png'} alt="Profile" className="w-8 h-8 rounded-full" />
                         )}
-                        <div className={`${message.senderId === currentUser.id ? 'bg-blue-500 text-white' : 'bg-gray-100'} p-3 rounded-lg max-w-[70%]`}>
+                        <div className={`${message.senderId === currentUser.id ? 'bg-purple-500  text-white rounded-lg shadow-lg text-center' : 'bg-pink-500'} p-3 rounded-lg max-w-[70%]`}>
                             <p className="text-sm">{message.content}</p>
                         </div>
                     </div>

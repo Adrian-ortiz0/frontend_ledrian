@@ -36,14 +36,14 @@ export const ContactList = ({ currentUser, onSelectContact }) => {
     }, [currentUser]);
 
     return (
-        <aside className="w-1/4 bg-gray-100 p-4 border-r border-gray-200">
-            <h2 className="text-lg font-semibold mb-4">Contactos</h2>
+        <aside className="w-1/4 bg-gray-800 text-white border-r border-gray-200">
+            <h2 className="p-5 text-lg font-semibold mb-4">Chats</h2>
             <ul>
                 {contacts.length > 0 ? (
                     contacts.map((contact) => (
                         <li key={contact.id} className="mb-2">
                             <button
-                                className="flex items-center p-2 w-full text-left focus:outline-none hover:bg-gray-200 rounded"
+                                className="flex items-center p-2 w-full text-left focus:outline-none hover:bg-gray-600"
                                 onClick={() => onSelectContact(contact)}
                             >
                                 <img src={contact.photo} alt={contact.name} className="w-10 h-10 rounded-full" />
