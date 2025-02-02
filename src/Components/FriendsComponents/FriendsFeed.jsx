@@ -5,7 +5,7 @@ export const FriendsFeed = ({ usuario }) => {
 
   return (
     <div className="friends_feed">
-      <div className="flex flex-col w-[60vw] p-10 left-[15vw] fixed">
+      <div className="flex flex-col w-screen lg:flex-col lg:w-[60vw] lg:p-10 lg:left-[15vw] lg:fixed">
         {followingIds.length === 0 ? (
           <p className="text-white text-center">No estás siguiendo a nadie.</p>
         ) : (

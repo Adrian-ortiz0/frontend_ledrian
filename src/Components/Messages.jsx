@@ -5,6 +5,7 @@ import { AsideProfile } from './LedrianInterfazSubComponents/AsideProfile';
 import { AsideContacts } from './MessagesComponents/AsideContacts';
 import { ChatContainer } from './MessagesComponents/ChatContainer';
 import { AsideOnlyIcons } from './MessagesComponents/AsideOnlyIcons';
+import MessagingContainer from './Chat/MessagingContainer';
 
 export const Messages = () => {
 
@@ -14,8 +15,7 @@ export const Messages = () => {
     <div className='bg-white h-screen flex-col'>
         <section className='flex h-screen'>
             <AsideOnlyIcons usuario={usuario} />
-            <AsideContacts usuario={usuario} />
-            <ChatContainer usuario={usuario} />
+            <MessagingContainer usuario={usuario} />
         </section>
     </div>
   )
