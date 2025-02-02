@@ -546,15 +546,7 @@
 }
 
 .profile_posts{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  max-height: 40vh;
-  width: 90%;
-  padding: 20px;
   margin: auto;
-  margin-top: 20px;
-  place-items: center;
 }
 
 .post{
