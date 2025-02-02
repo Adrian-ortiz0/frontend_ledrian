@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { connect, subscribe, sendMessage, disconnect } from '../../WebSocketService';
 import axios from 'axios';
+import { connect, subscribe, sendMessage, disconnect } from '../../WebSocketService';
 
 const ChatComponent = ({ currentUser, recipientId }) => {
     const [messages, setMessages] = useState([]);
@@ -8,12 +8,14 @@ const ChatComponent = ({ currentUser, recipientId }) => {
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        let subscription = null;
+        let intervalId;
 
         const onConnected = () => {
             setIsConnected(true);
-            subscription = subscribe(`/user/${currentUser.id}/queue/messages`, onMessageReceived);
+            console.log('WebSocket Connected and Subscribing...');
+            subscribe(`/user/${currentUser.id}/queue/messages`, onMessageReceived);
             fetchMessages();
+            intervalId = setInterval(fetchMessages, 100);
         };
 
         const onError = (error) => {
@@ -23,8 +25,7 @@ const ChatComponent = ({ currentUser, recipientId }) => {
         connect(onConnected, onError);
 
         return () => {
-            if (subscription) subscription.unsubscribe();
-            disconnect();
+            clearInterval(intervalId); 
             setIsConnected(false);
         };
     }, [currentUser, recipientId]);
@@ -47,6 +48,7 @@ const ChatComponent = ({ currentUser, recipientId }) => {
     };
 
     const onMessageReceived = (message) => {
+        console.log('Mensaje recibido:', message);
         if (
             (message.senderId === currentUser.id && message.recipientId === recipientId) ||
             (message.senderId === recipientId && message.recipientId === currentUser.id)
@@ -62,6 +64,7 @@ const ChatComponent = ({ currentUser, recipientId }) => {
                 senderId: currentUser.id,
                 recipientId: recipientId
             };
+            console.log('Enviando mensaje:', chatMessage);
             sendMessage('/app/chat.sendMessage', chatMessage);
             setMessageContent('');
         }
