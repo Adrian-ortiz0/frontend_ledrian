@@ -59,8 +59,8 @@ export const OtherProfileBanner = ({ usuario }) => {
       AxiosConfiguration.post(
         "/follows",
         {
-          usernameFollowedId: usuario.id,
-          usernameFollowingId: loggedUser.id,
+          usernameFollowedId: loggedUser.id,
+          usernameFollowingId: usuario.id,
           date: new Date().toISOString(),
         },
         {
