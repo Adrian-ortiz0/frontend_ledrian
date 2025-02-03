@@ -28,8 +28,6 @@ export const OtherProfileBanner = ({ usuario }) => {
       return;
     }
 
-    console.log("Token utilizado:", authToken);
-
     setIsLoading(true);
 
     if (follow) {

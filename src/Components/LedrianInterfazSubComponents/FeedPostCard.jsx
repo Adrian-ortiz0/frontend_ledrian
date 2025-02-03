@@ -13,6 +13,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShareIcon from "@mui/icons-material/Share";
+import { useUser } from "../../UserContext";
+import AxiosConfiguration from "../../AxiosConfiguration";
 
 export const FeedPostCard = ({
   username,
@@ -22,11 +24,30 @@ export const FeedPostCard = ({
   comments,
   description,
   date,
+  postId,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const { usuario } = useUser();
 
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
+  const handleLikeClick = async () => {
+    try {
+      const interationDTO = {
+        userGivingInteration: usuario.username,
+        userReceivingInteration: username,
+        idPublication: postId, 
+        type: "Like",
+        date: new Date().toISOString() 
+      };
+
+      const response = await AxiosConfiguration.post("interations", interationDTO);
+
+      if (response.status === 200) {
+        setIsLiked(!isLiked);
+        // Aquí podrías actualizar el estado de likes en el componente si es necesario
+      }
+    } catch (error) {
+      console.error("Error al dar like:", error);
+    }
   };
 
   const formatDate = (dateString) => {
