@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; 
 import {
   Avatar,
   IconButton,
@@ -29,21 +29,47 @@ export const FeedPostCard = ({
   const [isLiked, setIsLiked] = useState(false);
   const { usuario } = useUser();
 
+  useEffect(() => {
+    const savedLikes = JSON.parse(localStorage.getItem("likes")) || {};
+    if (savedLikes[postId]) {
+      setIsLiked(true);
+    }
+  }, [postId]);
+
   const handleLikeClick = async () => {
     try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        console.error("No se encontró el token de autenticación");
+        return;
+      }
+
       const interationDTO = {
         userGivingInteration: usuario.username,
         userReceivingInteration: username,
-        idPublication: postId, 
+        idPublication: postId,
         type: "Like",
-        date: new Date().toISOString() 
+        date: new Date().toISOString(),
       };
 
-      const response = await AxiosConfiguration.post("interations", interationDTO);
+      const response = await AxiosConfiguration.post("interations", interationDTO, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
       if (response.status === 200) {
-        setIsLiked(!isLiked);
-        // Aquí podrías actualizar el estado de likes en el componente si es necesario
+        const newIsLiked = !isLiked;
+        setIsLiked(newIsLiked);
+
+        const savedLikes = JSON.parse(localStorage.getItem("likes")) || {};
+        if (newIsLiked) {
+          savedLikes[postId] = true; 
+        } else {
+          delete savedLikes[postId]; 
+        }
+        localStorage.setItem("likes", JSON.stringify(savedLikes));
       }
     } catch (error) {
       console.error("Error al dar like:", error);
