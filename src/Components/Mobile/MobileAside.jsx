@@ -53,7 +53,7 @@ export const MobileNavBar = ({ usuario }) => {
       <NavButton
         imagePath="/public/friends_icon.png"
         altText="Followers Icon"
-        navigateTo="/myfollowers"
+        navigateTo="/friends"
         width={28}
         height={28}
       />

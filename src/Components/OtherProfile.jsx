@@ -47,6 +47,8 @@ export const OtherProfile = () => {
   }
 
   return (
+
+    
     <div className="">
       <OtherProfileFeed usuario={selectedUser} otroUsuario={usuario} /> 
       <SuggestionsSection usuario={usuario} />

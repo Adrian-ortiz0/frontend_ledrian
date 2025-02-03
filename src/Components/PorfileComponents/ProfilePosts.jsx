@@ -52,7 +52,7 @@ export const ProfilePosts = ({ usuario }) => {
   }, [usuario]);
 
   return (
-    <section className="profile_posts">
+    <section className="profile_posts grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-h-[40vh] w-[90%] p-5 mx-auto mt-5 place-items-center ">
       {ownPosts.length > 0 ? (
         ownPosts.map((post) => (
           <PostCard
