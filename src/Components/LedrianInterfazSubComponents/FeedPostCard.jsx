@@ -10,13 +10,60 @@ import {
   CardActions,
   Snackbar,
   Alert,
+  Modal,
+  Box,
+  Divider
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShareIcon from "@mui/icons-material/Share";
+import CloseIcon from "@mui/icons-material/Close";
 import { useUser } from "../../UserContext";
 import AxiosConfiguration from "../../AxiosConfiguration";
+
+const CommentsModal = ({ open, handleClose, postId }) => {
+  return (
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="comments-modal"
+      aria-describedby="comments-modal-description"
+    >
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: '#1e2939',
+        color: 'white',
+        borderRadius: 2,
+        boxShadow: 24,
+        p: 3,
+        maxHeight: '80vh',
+        overflow: 'auto'
+      }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6">Comentarios</Typography>
+          <IconButton onClick={handleClose} sx={{ color: 'white' }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <Divider sx={{ bgcolor: '#3a4a5c', mb: 2 }} />
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body2" sx={{ color: '#b0b0b0', textAlign: 'center' }}>
+            Función de comentarios en desarrollo...
+          </Typography>
+        </Box>
+
+        <Divider sx={{ bgcolor: '#3a4a5c', mt: 2, mb: 2 }} />
+      </Box>
+    </Modal>
+  );
+};
 
 export const FeedPostCard = ({
   username,
@@ -33,6 +80,7 @@ export const FeedPostCard = ({
   const [showSuccess, setShowSuccess] = useState(false);
   const [actionType, setActionType] = useState("");
   const [interactionId, setInteractionId] = useState(null);
+  const [commentsOpen, setCommentsOpen] = useState(false);
   const { usuario } = useUser();
 
   useEffect(() => {
@@ -69,7 +117,7 @@ export const FeedPostCard = ({
     };
 
     checkLikeStatus();
-  }, [postId, usuario?.id]); 
+  }, [postId, usuario?.id]);
 
   const handleLikeClick = async () => {
     try {
@@ -115,6 +163,10 @@ export const FeedPostCard = ({
       setIsLiked(prev => !prev); 
       setShowSuccess(false);
     }
+  };
+
+  const handleCommentsClick = () => {
+    setCommentsOpen(true);
   };
 
   const formatDate = (dateString) => {
@@ -168,7 +220,10 @@ export const FeedPostCard = ({
           {isLiked ? <FavoriteIcon fontSize="medium" /> : <FavoriteBorderIcon fontSize="medium" />}
         </IconButton>
         
-        <IconButton sx={{ color: "#ffffff" }}>
+        <IconButton 
+          onClick={handleCommentsClick}
+          sx={{ color: "#ffffff" }}
+        >
           <ChatBubbleOutlineIcon fontSize="medium" />
         </IconButton>
         
@@ -204,6 +259,12 @@ export const FeedPostCard = ({
           {actionType === "add" ? "❤️ ¡Like agregado!" : "💔 Like eliminado"}
         </Alert>
       </Snackbar>
+
+      <CommentsModal 
+        open={commentsOpen}
+        handleClose={() => setCommentsOpen(false)}
+        postId={postId}
+      />
     </Card>
   );
 };
