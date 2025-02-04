@@ -35,7 +35,6 @@ export const FeedPostCard = ({
   const [interactionId, setInteractionId] = useState(null);
   const { usuario } = useUser();
 
-  // Verificar estado del like con el backend
   useEffect(() => {
     const checkLikeStatus = async () => {
       try {
@@ -86,6 +85,7 @@ export const FeedPostCard = ({
 
       if (action === "add") {
         const response = await AxiosConfiguration.post("interations", {
+          date: new Date().toISOString(),
           publicationId: postId,
           userGivingId: usuario.id,
           userReceivingId: publisherId,
