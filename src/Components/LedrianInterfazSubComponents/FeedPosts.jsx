@@ -83,6 +83,7 @@ export const FeedPosts = ({ usuario }) => {
             date={post.date}
             postId = {post.id}
             publisherId={post.publisherId}
+            interations={post.interations}
           />
         ))
       ) : (
