@@ -1,14 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, IconButton, Typography, Divider } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import AxiosConfiguration from '../../AxiosConfiguration';
+import { useUser } from '../../UserContext';
 
-export const PostCardModalPc = ({ img, description, username, onClose, date, interations }) => {
+export const PostCardModalPc = ({ img, description, username, onClose, date, interations, postId}) => {
+  const { usuario } = useUser();
+  const [isLiked, setIsLiked] = useState(false);
+  const [interactionId, setInteractionId] = useState(null);
+  const [optimisticLikes, setOptimisticLikes] = useState(0);
 
-  const likesCount = interations?.filter((i) => i.typeInterationId === 1).length || 0;
-  const commentsCount = interations?.filter((i) => i.typeInterationId === 2).length || 0;
+  useEffect(() => {
+    const userInteraction = interations?.find(
+      (i) => i.typeInterationId === 1 && i.userGivingId === usuario?.id
+    );
+    setIsLiked(!!userInteraction);
+    setInteractionId(userInteraction?.id || null);
+
+    const initialLikes = interations?.filter((i) => i.typeInterationId === 1).length || 0;
+    setOptimisticLikes(initialLikes);
+  }, [interations, usuario?.id]);
+
+  const handleLikeClick = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken || !usuario?.id) return;
+
+      const newIsLiked = !isLiked;
+      setIsLiked(newIsLiked);
+      setOptimisticLikes((prev) => (newIsLiked ? prev + 1 : prev - 1));
+
+      if (newIsLiked) {
+        const response = await AxiosConfiguration.post(
+          "interations",
+          {
+            date: new Date().toISOString(),
+            publicationId: postId,
+            userGivingId: usuario.id,
+            userReceivingId: usuario.id,
+            typeInterationId: 1,
+          },
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
+        );
+        setInteractionId(response.data.id);
+      } else {
+        if (interactionId) {
+          await AxiosConfiguration.delete(`interations/${interactionId}`, {
+            headers: { Authorization: `Bearer ${authToken}` },
+          });
+          setInteractionId(null);
+        }
+      }
+    } catch (error) {
+      console.error("Error gestionando like:", error);
+      setIsLiked((prev) => !prev);
+      setOptimisticLikes((prev) => (isLiked ? prev - 1 : prev + 1));
+    }
+  };
 
   const formattedDate = new Date(date).toLocaleDateString('es-ES', {
     day: 'numeric',
@@ -78,23 +132,21 @@ export const PostCardModalPc = ({ img, description, username, onClose, date, int
           <div className="p-4 border-t">
             <div className="flex justify-between mb-2">
               <div className="flex space-x-4">
-                <IconButton>
-                  <FavoriteBorderIcon />
+                <IconButton onClick={handleLikeClick}>
+                  {isLiked ? (
+                    <FavoriteIcon color="error" />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
                 </IconButton>
                 <IconButton>
                   <ChatBubbleOutlineIcon />
                 </IconButton>
-                <IconButton>
-                  <SendOutlinedIcon />
-                </IconButton>
               </div>
-              <IconButton>
-                <BookmarkBorderOutlinedIcon />
-              </IconButton>
             </div>
 
             <Typography variant="body2" className="font-semibold">
-              {likesCount} Me gusta
+              {optimisticLikes} Me gusta
             </Typography>
             <Typography variant="caption" className="text-gray-500 block">
               {formattedDate}

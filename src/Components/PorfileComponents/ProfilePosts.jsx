@@ -64,6 +64,7 @@ export const ProfilePosts = ({ usuario }) => {
             description={post.description}
             date={post.date}
             interations={post.interations}
+            postId={post.id}
           />
         ))
       ) : (
