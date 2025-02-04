@@ -43,7 +43,7 @@ export const AsideProfile = ({ usuario }) => {
   };
 
   return (
-    <aside className="w-[15vw] h-full flex flex-col justify-between items-center bg-gray-800 text-gray-200 fixed">
+    <aside className="w-[15vw] h-[100vh] flex flex-col justify-between items-center bg-gray-800 text-gray-200 ">
       <div className="flex flex-col w-full justify-around">
         <span className="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 italic font-bold pl-[2vw] pt-10 pb-5">Ledrian</span>
 

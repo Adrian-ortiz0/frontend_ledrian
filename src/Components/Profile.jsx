@@ -15,8 +15,8 @@ export const Profile = () => {
 
     <div className=''>
       <div className='hidden lg:flex'>
-        <ProfileFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
+        <ProfileFeed usuario={usuario} />
       <AsideProfile usuario={usuario} />
       </div>
       <div className='lg:hidden'>

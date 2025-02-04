@@ -51,8 +51,10 @@ export const ProfilePosts = ({ usuario }) => {
     fetchOwnPosts();
   }, [usuario]);
 
+  console.log(ownPosts)
+
   return (
-    <section className="profile_posts grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-h-[40vh] w-[90%] p-5 mx-auto mt-5 place-items-center ">
+    <section className="profile_posts grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-h-[40vh] w-[90%] p-5 mx-auto mt-5 place-items-center z-[1] ">
       {ownPosts.length > 0 ? (
         ownPosts.map((post) => (
           <PostCard
@@ -60,6 +62,8 @@ export const ProfilePosts = ({ usuario }) => {
             username={post.username}
             img={post.photo}
             description={post.description}
+            date={post.date}
+            interations={post.interations}
           />
         ))
       ) : (
