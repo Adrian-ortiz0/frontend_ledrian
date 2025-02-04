@@ -25,7 +25,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useUser } from "../../UserContext";
 import AxiosConfiguration from "../../AxiosConfiguration";
 
-const CommentsModal = ({ open, handleClose, postId, publisherId, onCommentAdded }) => {
+const CommentsModal = ({ 
+  open, 
+  handleClose, 
+  postId, 
+  publisherId, 
+  onCommentAdded,
+  existingComments 
+}) => {
   const { usuario } = useUser();
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,34 +40,10 @@ const CommentsModal = ({ open, handleClose, postId, publisherId, onCommentAdded 
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [commentsList, setCommentsList] = useState([]);
-  const [loadingComments, setLoadingComments] = useState(false);
-
-  const fetchComments = async () => {
-    try {
-      setLoadingComments(true);
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) return;
-
-      const response = await AxiosConfiguration.get("interations", {
-        params: {
-          publicationId: postId,
-          typeInterationId: 2,
-          _expand: "userGiving"
-        },
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-
-      setCommentsList(response.data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    } finally {
-      setLoadingComments(false);
-    }
-  };
 
   useEffect(() => {
-    if (open) fetchComments();
-  }, [open, postId]);
+    setCommentsList(existingComments || []);
+  }, [existingComments]);
 
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
@@ -70,6 +53,19 @@ const CommentsModal = ({ open, handleClose, postId, publisherId, onCommentAdded 
       if (!authToken || !usuario?.id) return;
 
       setIsSubmitting(true);
+      
+      const tempComment = {
+        tempId: Date.now(),
+        comment: comment.trim(),
+        date: new Date().toISOString(),
+        userGiving: usuario,
+        publicationId: postId,
+        typeInterationId: 2
+      };
+
+      setCommentsList(prev => [tempComment, ...prev]);
+      onCommentAdded(tempComment);
+
       const payload = {
         publicationId: postId,
         userGivingId: usuario.id,
@@ -87,13 +83,12 @@ const CommentsModal = ({ open, handleClose, postId, publisherId, onCommentAdded 
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       setComment("");
-      await fetchComments();
-      onCommentAdded();
     } catch (error) {
       console.error("Error agregando comentario:", error);
       setSnackbarMessage("Error al agregar comentario");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
+      setCommentsList(prev => prev.filter(c => c.tempId !== tempComment.tempId));
     } finally {
       setIsSubmitting(false);
     }
@@ -179,11 +174,7 @@ const CommentsModal = ({ open, handleClose, postId, publisherId, onCommentAdded 
         <Divider sx={{ bgcolor: "#3a4a5c", mb: 2 }} />
         
         <Box sx={{ mb: 2 }}>
-          {loadingComments ? (
-            <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
-              <CircularProgress size={24} />
-            </Box>
-          ) : commentsList.length === 0 ? (
+          {commentsList.length === 0 ? (
             <Typography
               variant="body2"
               sx={{ color: "#b0b0b0", textAlign: "center" }}
@@ -192,7 +183,7 @@ const CommentsModal = ({ open, handleClose, postId, publisherId, onCommentAdded 
             </Typography>
           ) : (
             commentsList.map((comment) => (
-              <Box key={comment.id} sx={{ mb: 2 }}>
+              <Box key={comment.id || comment.tempId} sx={{ mb: 2 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
                   <Avatar 
                     src={comment.userGiving?.profilePic} 
@@ -246,7 +237,6 @@ export const FeedPostCard = ({
   profilePic,
   imageUrl,
   interations,
-  comments: initialComments,
   description,
   date,
   postId,
@@ -258,24 +248,24 @@ export const FeedPostCard = ({
   const [interactionId, setInteractionId] = useState(null);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [optimisticLikes, setOptimisticLikes] = useState(0);
-  const [optimisticComments, setOptimisticComments] = useState(initialComments || 0);
+  const [comments, setComments] = useState([]);
   const { usuario } = useUser();
 
   useEffect(() => {
+    // Actualizar likes
     const userInteraction = interations?.find(
       (i) => i.typeInterationId === 1 && i.userGivingId === usuario?.id
     );
     setIsLiked(!!userInteraction);
     setInteractionId(userInteraction?.id || null);
 
-    const initialLikes =
-      interations?.filter((i) => i.typeInterationId === 1).length || 0;
+    const initialLikes = interations?.filter((i) => i.typeInterationId === 1).length || 0;
     setOptimisticLikes(initialLikes);
-  }, [interations, usuario?.id]);
 
-  useEffect(() => {
-    setOptimisticComments(initialComments);
-  }, [initialComments]);
+    // Actualizar comentarios
+    const initialComments = interations?.filter((i) => i.typeInterationId === 2) || [];
+    setComments(initialComments);
+  }, [interations, usuario?.id]);
 
   const handleLikeClick = async () => {
     try {
@@ -317,6 +307,10 @@ export const FeedPostCard = ({
       setOptimisticLikes((prev) => (isLiked ? prev - 1 : prev + 1));
       setShowSuccess(false);
     }
+  };
+
+  const handleCommentAdded = (newComment) => {
+    setComments(prev => [newComment, ...prev]);
   };
 
   const handleCommentsClick = () => {
@@ -399,7 +393,7 @@ export const FeedPostCard = ({
           {optimisticLikes} Me gusta
         </Typography>
         <Typography variant="body2" sx={{ color: "#b0b0b0" }}>
-          {optimisticComments} Comentarios
+          {comments.length} Comentarios
         </Typography>
       </CardContent>
 
@@ -426,7 +420,8 @@ export const FeedPostCard = ({
         handleClose={() => setCommentsOpen(false)}
         postId={postId}
         publisherId={publisherId}
-        onCommentAdded={() => setOptimisticComments(c => c + 1)}
+        onCommentAdded={handleCommentAdded}
+        existingComments={comments}
       />
     </Card>
   );
