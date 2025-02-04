@@ -25,6 +25,7 @@ export const FeedPostCard = ({
   description,
   date,
   postId,
+  publisherId
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const { usuario } = useUser();
@@ -46,10 +47,10 @@ export const FeedPostCard = ({
       }
 
       const interationDTO = {
-        userGivingInteration: usuario.username,
-        userReceivingInteration: username,
-        idPublication: postId,
-        type: "Like",
+        publicationId: postId,
+        userGivingId: usuario.id,
+        userReceivingId: publisherId,
+        typeInterationId: 1,
         date: new Date().toISOString(),
       };
 
