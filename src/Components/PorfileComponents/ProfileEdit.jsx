@@ -11,13 +11,9 @@ export const ProfileEdit = () => {
   const {usuario} = useUser();
 
   return (
-    <div className="profile_container">
-      <HeaderNav usuario={usuario} />
-      <section className="content">
-        <AsideProfile usuario={usuario} />
+    <>
         <ProfileEditForm usuario={usuario} />
         {/*<SuggestionsSection usuario={usuario} />*/}
-      </section>
-    </div>
+        </>
   );
 };
