@@ -16,12 +16,15 @@ import {
   TextField,
   Button,
   CircularProgress,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import ShareIcon from "@mui/icons-material/Share";
 import CloseIcon from "@mui/icons-material/Close";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useUser } from "../../UserContext";
 import AxiosConfiguration from "../../AxiosConfiguration";
 
@@ -40,10 +43,27 @@ const CommentsModal = ({
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [commentsList, setCommentsList] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
 
   useEffect(() => {
-    setCommentsList(existingComments || []);
+    const normalizedComments = (existingComments || []).map(comment => ({
+      ...comment,
+      userGiving: comment.userGiving || { id: comment.userGivingId },
+      username: comment.username || comment.userGiving?.username
+    }));
+    setCommentsList(normalizedComments);
   }, [existingComments]);
+
+  const handleMenuOpen = (event, commentId) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedCommentId(commentId);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedCommentId(null);
+  };
 
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
@@ -61,7 +81,8 @@ const CommentsModal = ({
         userGiving: usuario,
         publicationId: postId,
         typeInterationId: 2,
-        username: usuario.username, 
+        username: usuario.username,
+        userGivingId: usuario.id 
       };
 
       setCommentsList((prev) => [tempComment, ...prev]);
@@ -74,7 +95,7 @@ const CommentsModal = ({
         typeInterationId: 2,
         date: new Date().toISOString(),
         comment: comment.trim(),
-        username: usuario.username, 
+        username: usuario.username,
       };
 
       await AxiosConfiguration.post("interations", payload, {
@@ -90,7 +111,6 @@ const CommentsModal = ({
       setSnackbarMessage("Error al agregar comentario");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
-      // Se remueve el comentario temporal en caso de error
       setCommentsList((prev) => prev.filter((c) => c.tempId !== tempComment.tempId));
     } finally {
       setIsSubmitting(false);
@@ -152,16 +172,9 @@ const CommentsModal = ({
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             variant="filled"
-            InputProps={{
-              style: { color: "white" },
-            }}
-            InputLabelProps={{
-              style: { color: "#b0b0b0" },
-            }}
-            sx={{
-              backgroundColor: "#334155",
-              borderRadius: 1,
-            }}
+            InputProps={{ style: { color: "white" } }}
+            InputLabelProps={{ style: { color: "#b0b0b0" } }}
+            sx={{ backgroundColor: "#334155", borderRadius: 1 }}
           />
           <Button
             variant="contained"
@@ -178,29 +191,51 @@ const CommentsModal = ({
 
         <Box sx={{ mb: 2 }}>
           {commentsList.length === 0 ? (
-            <Typography
-              variant="body2"
-              sx={{ color: "#b0b0b0", textAlign: "center" }}
-            >
+            <Typography variant="body2" sx={{ color: "#b0b0b0", textAlign: "center" }}>
               Aún no hay comentarios.
             </Typography>
           ) : (
             commentsList.map((comment) => (
-              <Box key={comment.id || comment.tempId} sx={{ mb: 2 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
-                  <Avatar
-                    src={comment.userGiving?.profilePic}
-                    sx={{ width: 24, height: 24 }}
-                  />
-                  {/* Se muestra el username desde la propiedad "username" o, en su defecto, de "userGiving.username" */}
-                  <Typography variant="body2" sx={{ color: "white", fontWeight: 500 }}>
-                    {comment.username || comment.userGiving?.username}
-                  </Typography>
+              <Box 
+                key={comment.id || comment.tempId} 
+                sx={{ mb: 2, position: "relative" }}
+              >
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
+                    <Avatar
+                      src={comment.userGiving?.profilePic}
+                      sx={{ width: 24, height: 24 }}
+                    />
+                    <Typography variant="body2" sx={{ color: "white", fontWeight: 500 }}>
+                      {comment.username || comment.userGiving?.username}
+                    </Typography>
+                  </Box>
+
+                  {(usuario?.id === comment.userGiving?.id || usuario?.id === comment.userGivingId) && (
+                    <IconButton
+                      size="small"
+                      sx={{ 
+                        color: "#b0b0b0",
+                        '&:hover': { 
+                          color: "white",
+                          backgroundColor: "rgba(255, 255, 255, 0.1)"
+                        }
+                      }}
+                      onClick={(e) => handleMenuOpen(e, comment.id || comment.tempId)}
+                    >
+                      <MoreVertIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </Box>
+
+                {/* Contenido del comentario */}
                 <Typography variant="body2" sx={{ color: "white", ml: 4 }}>
                   {comment.comment}
                 </Typography>
-                <Typography variant="caption" sx={{ color: "#b0b0b0", ml: 4, display: "block" }}>
+                <Typography 
+                  variant="caption" 
+                  sx={{ color: "#b0b0b0", ml: 4, display: "block" }}
+                >
                   {new Date(comment.date).toLocaleDateString("es-ES", {
                     day: "2-digit",
                     month: "short",
@@ -212,6 +247,44 @@ const CommentsModal = ({
             ))
           )}
         </Box>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          sx={{
+            '& .MuiPaper-root': {
+              backgroundColor: '#334155',
+              color: 'white',
+              boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.5)',
+              minWidth: '120px',
+            },
+          }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <MenuItem 
+            onClick={handleMenuClose}
+            sx={{
+              '&:hover': { backgroundColor: '#3a4a5c' },
+              fontSize: '0.875rem',
+              py: 1,
+            }}
+          >
+            Editar
+          </MenuItem>
+          <MenuItem 
+            onClick={handleMenuClose}
+            sx={{
+              '&:hover': { backgroundColor: '#3a4a5c' },
+              fontSize: '0.875rem',
+              py: 1,
+              color: '#ff6666',
+            }}
+          >
+            Eliminar
+          </MenuItem>
+        </Menu>
 
         <Snackbar
           open={snackbarOpen}
@@ -255,7 +328,6 @@ export const FeedPostCard = ({
   const { usuario } = useUser();
 
   useEffect(() => {
-    // Actualizar likes
     const userInteraction = interations?.find(
       (i) => i.typeInterationId === 1 && i.userGivingId === usuario?.id
     );
@@ -265,7 +337,6 @@ export const FeedPostCard = ({
     const initialLikes = interations?.filter((i) => i.typeInterationId === 1).length || 0;
     setOptimisticLikes(initialLikes);
 
-    // Actualizar comentarios
     const initialComments = interations?.filter((i) => i.typeInterationId === 2) || [];
     setComments(initialComments);
   }, [interations, usuario?.id]);
