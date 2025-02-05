@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
+import {
+  Avatar,
+  IconButton,
+  Typography,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+} from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -24,7 +36,10 @@ export const PostCardModalPc = ({
   const [commentInput, setCommentInput] = useState("");
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editedDescription, setEditedDescription] = useState(description);
 
   useEffect(() => {
     const userInteraction = interations?.find(
@@ -134,7 +149,8 @@ export const PostCardModalPc = ({
 
   const handleEdit = async () => {
     handleMenuClose();
-    console.log("Editar publicación", postId);
+    setEditedDescription(description);
+    setEditModalOpen(true);
   };
 
   const handleDelete = async () => {
@@ -154,6 +170,21 @@ export const PostCardModalPc = ({
     }
   };
 
+  const handleEditCancel = () => {
+    setEditModalOpen(false);
+  };
+
+  const handleEditSave = () => {
+    
+    AxiosConfiguration.put(`publications/${postId}`, {
+      headers: {Authorization: `Bearer ${authToken}`}
+    })
+
+    console.log("Nueva descripción guardada:", editedDescription);
+    // Por ahora solo se cierra el modal; luego integraremos la actualización.
+    setEditModalOpen(false);
+  };
+
   const formattedDate = new Date(date).toLocaleDateString("es-ES", {
     day: "numeric",
     month: "long",
@@ -161,143 +192,171 @@ export const PostCardModalPc = ({
   });
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 bg-opacity-80"
-      onClick={onClose}
-    >
+    <>
       <div
-        className="relative bg-white rounded-lg w-[100vw] max-w-5xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
-        onClick={(e) => e.stopPropagation()}
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 bg-opacity-80"
+        onClick={onClose}
       >
-        <button
-          className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70 transition-all"
-          onClick={onClose}
+        <div
+          className="relative bg-white rounded-lg w-[100vw] max-w-5xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
+          onClick={(e) => e.stopPropagation()}
         >
-          &times;
-        </button>
+          <button
+            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70 transition-all"
+            onClick={onClose}
+          >
+            &times;
+          </button>
 
-        <div className="flex-1 bg-black flex items-center justify-center p-4">
-          <img
-            src={img}
-            alt={description}
-            className="max-w-full max-h-[80vh] object-contain"
-          />
-        </div>
-
-        <div className="flex-1 flex flex-col w-full md:w-[400px]">
-          <div className="flex items-center p-4 border-b">
-            <Avatar src="/default-avatar.jpg" alt={username} />
-            <Typography variant="subtitle1" className="ml-2 font-semibold">
-              {username}
-            </Typography>
-            <IconButton
-              aria-label="more"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              onClick={handleMenuClick}
-              className="ml-auto"
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="long-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={open}
-              onClose={handleMenuClose}
-            >
-              <MenuItem onClick={handleEdit}>Editar</MenuItem>
-              <MenuItem onClick={handleDelete}>Eliminar</MenuItem>
-            </Menu>
+          <div className="flex-1 bg-black flex items-center justify-center p-4">
+            <img
+              src={img}
+              alt={description}
+              className="max-w-full max-h-[80vh] object-contain"
+            />
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4">
-            <div className="mb-4">
-              <Typography variant="body1" className="font-semibold">
+          <div className="flex-1 flex flex-col w-full md:w-[400px]">
+            <div className="flex items-center p-4 border-b">
+              <Avatar src="/default-avatar.jpg" alt={username} />
+              <Typography variant="subtitle1" className="ml-2 font-semibold">
                 {username}
               </Typography>
-              <Typography variant="body2" className="text-gray-700">
-                {description}
+              <IconButton
+                aria-label="more"
+                aria-controls="long-menu"
+                aria-haspopup="true"
+                onClick={handleMenuClick}
+                className="ml-auto"
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={openMenu}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleEdit}>Editar</MenuItem>
+                <MenuItem onClick={handleDelete}>Eliminar</MenuItem>
+              </Menu>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="mb-4">
+                <Typography variant="body1" className="font-semibold">
+                  {username}
+                </Typography>
+                <Typography variant="body2" className="text-gray-700">
+                  {description}
+                </Typography>
+                <Typography variant="caption" className="text-gray-500 block mt-1">
+                  {formattedDate}
+                </Typography>
+              </div>
+
+              {commentsList.length > 0 ? (
+                commentsList.map((comment) => (
+                  <div key={comment.id || comment.tempId} className="mb-4">
+                    <Typography variant="body1" className="font-semibold">
+                      {comment.userGiving?.username || "Usuario"}
+                    </Typography>
+                    <Typography variant="body2" className="text-gray-700">
+                      {comment.comment}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      className="text-gray-500 block mt-1"
+                    >
+                      {new Date(comment.date).toLocaleString("es-ES", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </Typography>
+                  </div>
+                ))
+              ) : (
+                <Typography className="text-gray-500">
+                  No hay comentarios
+                </Typography>
+              )}
+            </div>
+
+            <div className="p-4 border-t">
+              <div className="flex justify-between mb-2">
+                <div className="flex space-x-4">
+                  <IconButton onClick={handleLikeClick}>
+                    {isLiked ? (
+                      <FavoriteIcon color="error" />
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )}
+                  </IconButton>
+                  <IconButton>
+                    <ChatBubbleOutlineIcon />
+                  </IconButton>
+                </div>
+              </div>
+
+              <Typography variant="body2" className="font-semibold">
+                {optimisticLikes} Me gusta
               </Typography>
-              <Typography variant="caption" className="text-gray-500 block mt-1">
+              <Typography variant="caption" className="text-gray-500 block">
                 {formattedDate}
               </Typography>
             </div>
 
-            {commentsList.length > 0 ? (
-              commentsList.map((comment) => (
-                <div key={comment.id || comment.tempId} className="mb-4">
-                  <Typography variant="body1" className="font-semibold">
-                    {comment.userGiving?.username || "Usuario"}
-                  </Typography>
-                  <Typography variant="body2" className="text-gray-700">
-                    {comment.comment}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    className="text-gray-500 block mt-1"
-                  >
-                    {new Date(comment.date).toLocaleString("es-ES", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </Typography>
-                </div>
-              ))
-            ) : (
-              <Typography className="text-gray-500">
-                No hay comentarios
-              </Typography>
-            )}
-          </div>
-
-          <div className="p-4 border-t">
-            <div className="flex justify-between mb-2">
-              <div className="flex space-x-4">
-                <IconButton onClick={handleLikeClick}>
-                  {isLiked ? (
-                    <FavoriteIcon color="error" />
-                  ) : (
-                    <FavoriteBorderIcon />
-                  )}
-                </IconButton>
-                <IconButton>
-                  <ChatBubbleOutlineIcon />
-                </IconButton>
+            <div className="p-4 border-t">
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  placeholder="Añade un comentario..."
+                  className="flex-1 outline-none"
+                  value={commentInput}
+                  onChange={(e) => setCommentInput(e.target.value)}
+                />
+                <button
+                  className="text-blue-500 font-semibold ml-2"
+                  onClick={handleCommentSubmit}
+                  disabled={isSubmittingComment || !commentInput.trim()}
+                >
+                  Publicar
+                </button>
               </div>
-            </div>
-
-            <Typography variant="body2" className="font-semibold">
-              {optimisticLikes} Me gusta
-            </Typography>
-            <Typography variant="caption" className="text-gray-500 block">
-              {formattedDate}
-            </Typography>
-          </div>
-
-          <div className="p-4 border-t">
-            <div className="flex items-center">
-              <input
-                type="text"
-                placeholder="Añade un comentario..."
-                className="flex-1 outline-none"
-                value={commentInput}
-                onChange={(e) => setCommentInput(e.target.value)}
-              />
-              <button
-                className="text-blue-500 font-semibold ml-2"
-                onClick={handleCommentSubmit}
-                disabled={isSubmittingComment || !commentInput.trim()}
-              >
-                Publicar
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <Dialog open={editModalOpen} onClose={handleEditCancel} fullWidth maxWidth="sm">
+        <DialogTitle>Editar Descripción</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Descripción"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            value={editedDescription}
+            onChange={(e) => setEditedDescription(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditCancel} color="secondary">
+            Cancelar
+          </Button>
+          <Button onClick={handleEditSave} color="primary" variant="contained">
+            Guardar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
