@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, IconButton, Typography, Divider } from '@mui/material';
+import { Avatar, IconButton, Typography } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
-import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import AxiosConfiguration from '../../AxiosConfiguration';
 import { useUser } from '../../UserContext';
 
-export const PostCardModalPc = ({ img, description, username, onClose, date, interations, postId}) => {
+export const PostCardModalPc = ({
+  img,
+  description,
+  username,
+  onClose,
+  date,
+  interations,
+  postId,
+}) => {
   const { usuario } = useUser();
   const [isLiked, setIsLiked] = useState(false);
   const [interactionId, setInteractionId] = useState(null);
   const [optimisticLikes, setOptimisticLikes] = useState(0);
+  
+  const [commentsList, setCommentsList] = useState([]);
+  const [commentInput, setCommentInput] = useState("");
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
   useEffect(() => {
     const userInteraction = interations?.find(
@@ -21,8 +31,13 @@ export const PostCardModalPc = ({ img, description, username, onClose, date, int
     setIsLiked(!!userInteraction);
     setInteractionId(userInteraction?.id || null);
 
-    const initialLikes = interations?.filter((i) => i.typeInterationId === 1).length || 0;
+    const initialLikes =
+      interations?.filter((i) => i.typeInterationId === 1).length || 0;
     setOptimisticLikes(initialLikes);
+
+    const initialComments =
+      interations?.filter((i) => i.typeInterationId === 2) || [];
+    setCommentsList(initialComments);
   }, [interations, usuario?.id]);
 
   const handleLikeClick = async () => {
@@ -64,10 +79,54 @@ export const PostCardModalPc = ({ img, description, username, onClose, date, int
     }
   };
 
-  const formattedDate = new Date(date).toLocaleDateString('es-ES', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
+  const handleCommentSubmit = async () => {
+    if (!commentInput.trim()) return;
+
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken || !usuario?.id) return;
+
+    setIsSubmittingComment(true);
+
+    const tempComment = {
+      tempId: Date.now(),
+      comment: commentInput.trim(),
+      date: new Date().toISOString(),
+      userGiving: usuario,
+      publicationId: postId,
+      typeInterationId: 2,
+    };
+
+    setCommentsList((prev) => [tempComment, ...prev]);
+    setCommentInput("");
+
+    try {
+      const payload = {
+        publicationId: postId,
+        userGivingId: usuario.id,
+
+        userReceivingId: usuario.id,
+        typeInterationId: 2,
+        date: new Date().toISOString(),
+        comment: tempComment.comment,
+      };
+
+      await AxiosConfiguration.post("interations", payload, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+    } catch (error) {
+      console.error("Error al enviar el comentario:", error);
+      setCommentsList((prev) =>
+        prev.filter((c) => c.tempId !== tempComment.tempId)
+      );
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
+  const formattedDate = new Date(date).toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 
   return (
@@ -115,18 +174,34 @@ export const PostCardModalPc = ({ img, description, username, onClose, date, int
               </Typography>
             </div>
 
-            {interations
-              ?.filter((i) => i.typeInterationId === 2)
-              .map((comment) => (
-                <div key={comment.id} className="mb-4">
+            {commentsList.length > 0 ? (
+              commentsList.map((comment) => (
+                <div key={comment.id || comment.tempId} className="mb-4">
                   <Typography variant="body1" className="font-semibold">
                     {comment.userGiving?.username || "Usuario"}
                   </Typography>
                   <Typography variant="body2" className="text-gray-700">
                     {comment.comment}
                   </Typography>
+                  <Typography
+                    variant="caption"
+                    className="text-gray-500 block mt-1"
+                  >
+                    {new Date(comment.date).toLocaleString("es-ES", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </Typography>
                 </div>
-              ))}
+              ))
+            ) : (
+              <Typography className="text-gray-500">
+                No hay comentarios
+              </Typography>
+            )}
           </div>
 
           <div className="p-4 border-t">
@@ -159,8 +234,16 @@ export const PostCardModalPc = ({ img, description, username, onClose, date, int
                 type="text"
                 placeholder="Añade un comentario..."
                 className="flex-1 outline-none"
+                value={commentInput}
+                onChange={(e) => setCommentInput(e.target.value)}
               />
-              <button className="text-blue-500 font-semibold">Publicar</button>
+              <button
+                className="text-blue-500 font-semibold ml-2"
+                onClick={handleCommentSubmit}
+                disabled={isSubmittingComment || !commentInput.trim()}
+              >
+                Publicar
+              </button>
             </div>
           </div>
         </div>
