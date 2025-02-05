@@ -25,13 +25,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useUser } from "../../UserContext";
 import AxiosConfiguration from "../../AxiosConfiguration";
 
-const CommentsModal = ({ 
-  open, 
-  handleClose, 
-  postId, 
-  publisherId, 
+const CommentsModal = ({
+  open,
+  handleClose,
+  postId,
+  publisherId,
   onCommentAdded,
-  existingComments 
+  existingComments,
 }) => {
   const { usuario } = useUser();
   const [comment, setComment] = useState("");
@@ -53,17 +53,18 @@ const CommentsModal = ({
       if (!authToken || !usuario?.id) return;
 
       setIsSubmitting(true);
-      
+
       const tempComment = {
         tempId: Date.now(),
         comment: comment.trim(),
         date: new Date().toISOString(),
         userGiving: usuario,
         publicationId: postId,
-        typeInterationId: 2
+        typeInterationId: 2,
+        username: usuario.username, 
       };
 
-      setCommentsList(prev => [tempComment, ...prev]);
+      setCommentsList((prev) => [tempComment, ...prev]);
       onCommentAdded(tempComment);
 
       const payload = {
@@ -73,6 +74,7 @@ const CommentsModal = ({
         typeInterationId: 2,
         date: new Date().toISOString(),
         comment: comment.trim(),
+        username: usuario.username, 
       };
 
       await AxiosConfiguration.post("interations", payload, {
@@ -88,7 +90,8 @@ const CommentsModal = ({
       setSnackbarMessage("Error al agregar comentario");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
-      setCommentsList(prev => prev.filter(c => c.tempId !== tempComment.tempId));
+      // Se remueve el comentario temporal en caso de error
+      setCommentsList((prev) => prev.filter((c) => c.tempId !== tempComment.tempId));
     } finally {
       setIsSubmitting(false);
     }
@@ -172,7 +175,7 @@ const CommentsModal = ({
         </Box>
 
         <Divider sx={{ bgcolor: "#3a4a5c", mb: 2 }} />
-        
+
         <Box sx={{ mb: 2 }}>
           {commentsList.length === 0 ? (
             <Typography
@@ -185,12 +188,13 @@ const CommentsModal = ({
             commentsList.map((comment) => (
               <Box key={comment.id || comment.tempId} sx={{ mb: 2 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
-                  <Avatar 
-                    src={comment.userGiving?.profilePic} 
+                  <Avatar
+                    src={comment.userGiving?.profilePic}
                     sx={{ width: 24, height: 24 }}
                   />
+                  {/* Se muestra el username desde la propiedad "username" o, en su defecto, de "userGiving.username" */}
                   <Typography variant="body2" sx={{ color: "white", fontWeight: 500 }}>
-                    {comment.userGiving?.username}
+                    {comment.username || comment.userGiving?.username}
                   </Typography>
                 </Box>
                 <Typography variant="body2" sx={{ color: "white", ml: 4 }}>
@@ -218,8 +222,7 @@ const CommentsModal = ({
           <Alert
             severity={snackbarSeverity}
             sx={{
-              backgroundColor:
-                snackbarSeverity === "success" ? "#4caf50" : "#f44336",
+              backgroundColor: snackbarSeverity === "success" ? "#4caf50" : "#f44336",
               color: "#fff",
               "& .MuiAlert-icon": { color: "#fff" },
             }}
@@ -310,7 +313,7 @@ export const FeedPostCard = ({
   };
 
   const handleCommentAdded = (newComment) => {
-    setComments(prev => [newComment, ...prev]);
+    setComments((prev) => [newComment, ...prev]);
   };
 
   const handleCommentsClick = () => {
