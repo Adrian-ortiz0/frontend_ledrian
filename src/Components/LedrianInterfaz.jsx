@@ -18,7 +18,7 @@ export const LedrianInterfaz = () => {
 
   return (
     <main className='bg-gray-900  h-screen flex'>
-      <section className='flex h-screen hidden lg:flex'>
+      <section className='h-screen hidden lg:flex'>
         <Feed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
       <AsideProfile usuario={usuario} />
