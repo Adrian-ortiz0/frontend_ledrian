@@ -10,15 +10,17 @@ export const MyFollowers = () => {
     const { usuario } = useUser();
   return (
       <>
+      <main className='bg-gray-900  h-screen flex'>
         <section className=' hidden lg:bg-gray-900  h-screen lg:flex h-screen'>
+            <AsideProfile usuario={usuario} />
             <FollowersFeed usuario={usuario}/>
             <SuggestionsSection usuario={usuario}/>
-            <AsideProfile usuario={usuario} />
         </section>
         <section className='bg-gray-900 lg:hidden h-screen flex h-screen'>
             <FollowersFeed usuario={usuario}/>
             <MobileNavBar />
         </section>
+        </main>
       </>
   )
 }

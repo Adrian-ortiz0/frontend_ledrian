@@ -11,11 +11,11 @@ import { MobileNavBar } from './Mobile/MobileAside';
 export const Friends = () => {
   const { usuario } = useUser();
   return (
-    <section className='bg-gray-900  h-screen flex'>
-      <section className='flex h-screen hidden lg:flex'>
+    <main className='bg-gray-900  h-screen flex'>
+      <section className='hidden lg:bg-gray-900  h-screen lg:flex h-screen'>
+      <AsideProfile usuario={usuario} />
         <FriendsFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
-      <AsideProfile usuario={usuario} />
       </section>
 
       <section className='flex h-screen lg:hidden'>
@@ -23,6 +23,6 @@ export const Friends = () => {
         <MobileNavBar/>
         
       </section>
-    </section>
+    </main>
   );
 };

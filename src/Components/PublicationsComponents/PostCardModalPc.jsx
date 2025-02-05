@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, IconButton, Typography } from '@mui/material';
+import { Avatar, IconButton, Typography, Menu, MenuItem } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AxiosConfiguration from '../../AxiosConfiguration';
 import { useUser } from '../../UserContext';
 
@@ -19,10 +20,11 @@ export const PostCardModalPc = ({
   const [isLiked, setIsLiked] = useState(false);
   const [interactionId, setInteractionId] = useState(null);
   const [optimisticLikes, setOptimisticLikes] = useState(0);
-  
   const [commentsList, setCommentsList] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     const userInteraction = interations?.find(
@@ -103,7 +105,6 @@ export const PostCardModalPc = ({
       const payload = {
         publicationId: postId,
         userGivingId: usuario.id,
-
         userReceivingId: usuario.id,
         typeInterationId: 2,
         date: new Date().toISOString(),
@@ -120,6 +121,36 @@ export const PostCardModalPc = ({
       );
     } finally {
       setIsSubmittingComment(false);
+    }
+  };
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = async () => {
+    handleMenuClose();
+    console.log("Editar publicación", postId);
+  };
+
+  const handleDelete = async () => {
+    handleMenuClose();
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) return;
+
+      await AxiosConfiguration.delete(`publications/${postId}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      console.log("Publicación eliminada");
+      onClose();
+    } catch (error) {
+      console.error("Error eliminando la publicación:", error);
     }
   };
 
@@ -159,6 +190,25 @@ export const PostCardModalPc = ({
             <Typography variant="subtitle1" className="ml-2 font-semibold">
               {username}
             </Typography>
+            <IconButton
+              aria-label="more"
+              aria-controls="long-menu"
+              aria-haspopup="true"
+              onClick={handleMenuClick}
+              className="ml-auto"
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="long-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={open}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleEdit}>Editar</MenuItem>
+              <MenuItem onClick={handleDelete}>Eliminar</MenuItem>
+            </Menu>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4">
