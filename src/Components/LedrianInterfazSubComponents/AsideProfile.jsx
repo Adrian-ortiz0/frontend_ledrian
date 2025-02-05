@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
+import { Notifications } from "../Nofications/Notification";
+
 
 const NavButton = ({ imagePath, altText, text, navigateTo, onClick, width = 20, height = 20 }) => {
   const navigate = useNavigate();
@@ -26,6 +28,8 @@ const NavButton = ({ imagePath, altText, text, navigateTo, onClick, width = 20, 
 
 export const AsideProfile = ({ usuario }) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const handleCreate = () => {
@@ -34,6 +38,14 @@ export const AsideProfile = ({ usuario }) => {
 
   const handleCloseModal = () => {
     setIsCreateModalOpen(false);
+  };
+  
+  const handleNoti = () => {
+    setIsNotificationOpen(true); // Corregido: usar setIsNotificationOpen en lugar de isNotificationOpen
+  };
+
+  const handleNotiClose = () => {
+    setIsNotificationOpen(false);
   };
 
   const handleLogout = () => {
@@ -57,7 +69,7 @@ export const AsideProfile = ({ usuario }) => {
           imagePath="/public/notification_icon.png"
           altText="Messages Icon"
           text="Notifications"
-          navigateTo="/home"
+          onClick={handleNoti}
         />
         <NavButton
           imagePath="/public/friends_icon.png"
@@ -111,6 +123,10 @@ export const AsideProfile = ({ usuario }) => {
 
       {isCreateModalOpen && (
         <CreateModal onClose={handleCloseModal} usuario={usuario} />
+      )}
+
+      {isNotificationOpen && (
+       <Notifications onClose={handleNotiClose} usuario={usuario}/>
       )}
     </aside>
   );
