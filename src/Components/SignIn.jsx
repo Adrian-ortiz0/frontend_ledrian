@@ -50,10 +50,10 @@ export const SignIn = () => {
 
     return (
         <div className='bg-gradient-to-r from-black via-gray-900 to-black bg-[length:200%_200%] h-screen flex justify-center items-center'>
-            <aside className='bg-gradient-to-b from-gray-900 via-gray-800 to-gray-600 animate-gradient w-1/2 flex justify-center items-center h-screen border border-black/10'>
+            <aside className=' hidden md:flex bg-gradient-to-b from-gray-900 via-gray-800 to-gray-600 animate-gradient w-1/2 justify-center items-center h-screen border border-black/10'>
                 <h1 className='text-white text-4xl'>Ledrian</h1>
             </aside>
-            <main className='w-1/2 flex justify-around items-center h-screen flex-col bg-white'>
+            <main className='w-screen md:w-1/2 flex justify-around items-center h-screen flex-col bg-white'>
                 <h2 className="text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 mb-6">
                     Sign in
                 </h2>
