@@ -174,15 +174,25 @@ export const PostCardModalPc = ({
     setEditModalOpen(false);
   };
 
-  const handleEditSave = () => {
-    
-    AxiosConfiguration.put(`publications/${postId}`, {
-      headers: {Authorization: `Bearer ${authToken}`}
-    })
+  const handleEditSave = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) return;
 
-    console.log("Nueva descripción guardada:", editedDescription);
-    // Por ahora solo se cierra el modal; luego integraremos la actualización.
-    setEditModalOpen(false);
+      const payload = { description: editedDescription };
+
+      const response = await AxiosConfiguration.patch(
+        `publications/${postId}/description`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      console.log("Descripción actualizada:", response.data);
+      setEditModalOpen(false);
+    } catch (error) {
+      console.error("Error actualizando la descripción:", error);
+    }
   };
 
   const formattedDate = new Date(date).toLocaleDateString("es-ES", {
@@ -332,7 +342,12 @@ export const PostCardModalPc = ({
         </div>
       </div>
 
-      <Dialog open={editModalOpen} onClose={handleEditCancel} fullWidth maxWidth="sm">
+      <Dialog
+        open={editModalOpen}
+        onClose={handleEditCancel}
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogTitle>Editar Descripción</DialogTitle>
         <DialogContent>
           <TextField
