@@ -40,7 +40,7 @@ export const FriendsCard = ({ usuario }) => {
     try {
       if (isFollowing) {
         await AxiosConfiguration.delete(
-          `/follows/unfollow?followerId=${usuario.id}&followingId=${loggedUser.id}`,
+          `/follows/unfollow?followerId=${loggedUser.id}&followingId=${usuario.id}`,
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
         setIsFollowing(false);
