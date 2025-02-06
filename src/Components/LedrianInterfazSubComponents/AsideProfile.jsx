@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
-import { Notifications } from "../Nofications/Notification";
+// import { Notifications } from "../Notifications/Notication";
+// import { NotificationComponent} from "../Nofications/NotificationComponent"
 
 
 const NavButton = ({ imagePath, altText, text, navigateTo, onClick, width = 20, height = 20 }) => {
@@ -39,9 +40,9 @@ export const AsideProfile = ({ usuario }) => {
   const handleCloseModal = () => {
     setIsCreateModalOpen(false);
   };
-  
+
   const handleNoti = () => {
-    setIsNotificationOpen(true); // Corregido: usar setIsNotificationOpen en lugar de isNotificationOpen
+    setIsNotificationOpen(true);
   };
 
   const handleNotiClose = () => {
@@ -65,12 +66,13 @@ export const AsideProfile = ({ usuario }) => {
           text="Home"
           navigateTo="/home"
         />
-        <NavButton
+        {/* <NavButton
           imagePath="/public/notification_icon.png"
           altText="Messages Icon"
           text="Notifications"
           onClick={handleNoti}
-        />
+        /> */}
+        {/* <NotificationComponent userId ={2}/> */}
         <NavButton
           imagePath="/public/friends_icon.png"
           altText="Friends Icon"
@@ -95,7 +97,6 @@ export const AsideProfile = ({ usuario }) => {
           text="Messages"
           navigateTo="/messages"
         />
-        
       </div>
 
       <div className="flex flex-col w-full justify-around">
@@ -107,12 +108,6 @@ export const AsideProfile = ({ usuario }) => {
           width={40}
           height={40}
         />
-        {/*<NavButton 
-          imagePath="/public/setting_icon.png" 
-          altText="Settings Icon" 
-          text="Settings" 
-          navigateTo="/settings" 
-  />*/}
         <NavButton
           imagePath="/public/logout_icon.png"
           altText="Log out Icon"
@@ -124,10 +119,9 @@ export const AsideProfile = ({ usuario }) => {
       {isCreateModalOpen && (
         <CreateModal onClose={handleCloseModal} usuario={usuario} />
       )}
-
-      {isNotificationOpen && (
-       <Notifications onClose={handleNotiClose} usuario={usuario}/>
-      )}
+      {/* {isNotificationOpen && (
+        <Notifications onClose={handleNotiClose} usuario={usuario} />
+      )} */}
     </aside>
   );
 };
