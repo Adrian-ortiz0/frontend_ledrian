@@ -3,7 +3,16 @@ import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
 import { NotificationsList } from "../Nofications/NotificationsList";
 
-const NavButton = ({ imagePath, altText, text, navigateTo, onClick, width = 20, height = 20 }) => {
+const NavButton = ({
+  imagePath,
+  altText,
+  text,
+  navigateTo,
+  onClick,
+  width = 20,
+  height = 20,
+  isProfilePhoto = false,
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -17,10 +26,18 @@ const NavButton = ({ imagePath, altText, text, navigateTo, onClick, width = 20, 
   return (
     <button
       onClick={handleClick}
-      className="w-full h-full bg-transparent border-none rounded-lg cursor-pointer text-white transition duration-300 text-left pl-5 flex items-center gap-8 p-5 hover:bg-[#ffffff18]"
+      className={`w-full h-full bg-transparent border-none rounded-lg cursor-pointer text-white transition duration-300 text-left pl-5 flex items-center gap-8 p-5 hover:bg-[#ffffff18] ${
+        isProfilePhoto ? "justify-center" : ""
+      }`}
     >
-      <img src={imagePath} alt={altText} width={width} height={height} />
-      {text}
+      <img
+        src={imagePath}
+        alt={altText}
+        width={width}
+        height={height}
+        className={isProfilePhoto ? "rounded-full" : ""}
+      />
+      {!isProfilePhoto && text}
     </button>
   );
 };
@@ -52,6 +69,11 @@ export const AsideProfile = ({ usuario }) => {
     localStorage.removeItem("authToken");
     navigate("/login");
   };
+
+  // Ruta base para la imagen del usuario
+  const profileImagePath = usuario.photo.startsWith("http")
+    ? usuario.photo
+    : `http://localhost:8083/api/publications/images/${usuario.photo}`;
 
   return (
     <aside className="w-[15vw] h-[100vh] fixed flex flex-col justify-between items-center bg-gray-800 text-gray-200">
@@ -100,12 +122,17 @@ export const AsideProfile = ({ usuario }) => {
 
       <div className="flex flex-col w-full justify-around">
         <NavButton
-          imagePath={usuario.photo}
+          imagePath={profileImagePath}
           altText="User Photo"
-          text={`${usuario.name} ${usuario.lastname}`}
+          text={
+            <span className="text-white font-semibold ml-2">
+              {usuario.name} {usuario.lastname}
+            </span>
+          }
           navigateTo="/profile"
           width={40}
           height={40}
+          isProfilePhoto={false}
         />
         <NavButton
           imagePath="/logout_icon.png"
