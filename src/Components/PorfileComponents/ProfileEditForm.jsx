@@ -4,6 +4,17 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router';
 import { useUser } from '../../UserContext';
+import { 
+  Dialog, 
+  DialogContent, 
+  TextField, 
+  Button, 
+  IconButton, 
+  Typography,
+  Grid,
+  Box
+} from '@mui/material';
+import { Close, Save, Cancel } from '@mui/icons-material';
 
 export const ProfileEditForm = ({ usuario, onClose }) => {
   const navigate = useNavigate();
@@ -67,41 +78,175 @@ export const ProfileEditForm = ({ usuario, onClose }) => {
   };
 
   return (
-    <div className='w-screen h-screen bg-black flex items-center justify-center'>
-      <div className='bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg'>
-        <div className="w-full">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex space-x-4">
-              <div className="flex flex-col w-1/2 space-y-2">
-                <label htmlFor="name" className="font-semibold text-white">Name:</label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} className="p-2 border border-gray-600 rounded bg-gray-700 text-white" />
-              </div>
-              <div className="flex flex-col w-1/2 space-y-2">
-                <label htmlFor="lastname" className="font-semibold text-white">Last name:</label>
-                <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} className="p-2 border border-gray-600 rounded bg-gray-700 text-white" />
-              </div>
-            </div>
-            <div className="flex space-x-4">
-              <div className="flex flex-col w-1/2 space-y-2">
-                <label htmlFor="email" className="font-semibold text-white">Email:</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} className="p-2 border border-gray-600 rounded bg-gray-700 text-white" />
-              </div>
-              <div className="flex flex-col w-1/2 space-y-2">
-                <label htmlFor="username" className="font-semibold text-white">Username:</label>
-                <input type="text" name="username" value={formData.username} onChange={handleChange} className="p-2 border border-gray-600 rounded bg-gray-700 text-white" />
-              </div>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="bio" className="font-semibold text-white">Bio:</label>
-              <textarea name="bio" value={formData.bio} onChange={handleChange} className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white h-24 resize-none"></textarea>
-            </div>
-            <div className="text-center">
-              <button type="submit" className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-700">Save</button>
-              <button type="button" className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-700 ml-2" onClick={() => navigate('/profile')}>Discard</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <Dialog
+      open={true}
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      PaperProps={{
+        sx: {
+          bgcolor: '#1F2937',
+          borderRadius: '12px',
+          boxShadow: '0px 8px 24px rgba(0,0,0,0.2)'
+        }
+      }}
+    >
+      <Box sx={{ p: 3, position: 'relative' }}>
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 16,
+            top: 16,
+            color: 'gray.400'
+          }}
+        >
+          <Close />
+        </IconButton>
+
+        <Typography variant="h5" sx={{ color: 'white', mb: 3, fontWeight: 'bold' }}>
+          Editar Perfil
+        </Typography>
+
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Nombre"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                variant="filled"
+                InputProps={{
+                  sx: {
+                    color: 'white',
+                    bgcolor: '#374151',
+                    borderRadius: '8px',
+                    '&:hover': { bgcolor: '#3B4252' }
+                  }
+                }}
+                InputLabelProps={{ sx: { color: '#9CA3AF' } }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Apellido"
+                name="lastname"
+                value={formData.lastname}
+                onChange={handleChange}
+                variant="filled"
+                InputProps={{
+                  sx: {
+                    color: 'white',
+                    bgcolor: '#374151',
+                    borderRadius: '8px',
+                    '&:hover': { bgcolor: '#3B4252' }
+                  }
+                }}
+                InputLabelProps={{ sx: { color: '#9CA3AF' } }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                variant="filled"
+                InputProps={{
+                  sx: {
+                    color: 'white',
+                    bgcolor: '#374151',
+                    borderRadius: '8px',
+                    '&:hover': { bgcolor: '#3B4252' }
+                  }
+                }}
+                InputLabelProps={{ sx: { color: '#9CA3AF' } }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Usuario"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                variant="filled"
+                InputProps={{
+                  sx: {
+                    color: 'white',
+                    bgcolor: '#374151',
+                    borderRadius: '8px',
+                    '&:hover': { bgcolor: '#3B4252' }
+                  }
+                }}
+                InputLabelProps={{ sx: { color: '#9CA3AF' } }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Biografía"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                multiline
+                rows={4}
+                variant="filled"
+                InputProps={{
+                  sx: {
+                    color: 'white',
+                    bgcolor: '#374151',
+                    borderRadius: '8px',
+                    '&:hover': { bgcolor: '#3B4252' }
+                  }
+                }}
+                InputLabelProps={{ sx: { color: '#9CA3AF' } }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                startIcon={<Save />}
+                sx={{
+                  bgcolor: '#10B981',
+                  '&:hover': { bgcolor: '#059669' },
+                  textTransform: 'none',
+                  px: 3,
+                  py: 1
+                }}
+              >
+                Guardar Cambios
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<Cancel />}
+                onClick={onClose}
+                sx={{
+                  borderColor: '#6B7280',
+                  color: 'white',
+                  '&:hover': { borderColor: '#9CA3AF' },
+                  textTransform: 'none',
+                  px: 3,
+                  py: 1
+                }}
+              >
+                Cancelar
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Box>
+    </Dialog>
   );
 };
