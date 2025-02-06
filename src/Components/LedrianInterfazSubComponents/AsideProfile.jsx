@@ -100,7 +100,7 @@ export const AsideProfile = ({ usuario }) => {
 
       <div className="flex flex-col w-full justify-around">
         <NavButton
-          imagePath={usuario.photo} // Asegúrate que este valor sea una URL válida para la imagen del usuario
+          imagePath={usuario.photo}
           altText="User Photo"
           text={`${usuario.name} ${usuario.lastname}`}
           navigateTo="/profile"

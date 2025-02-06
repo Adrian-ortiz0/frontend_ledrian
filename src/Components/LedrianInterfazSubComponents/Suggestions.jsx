@@ -41,19 +41,19 @@ export const Suggestions = () => {
   return (
     <div className=''>
        <SuggestionCard 
-        profileImage="/public/profile_icon.png"
+        profileImage="/profile_icon.png"
         firstName="Leonardo"
         lastName="Gonzales"
         username="Leonardog"
       />
        <SuggestionCard 
-        profileImage="/public/profile_icon.png"
+        profileImage="/profile_icon.png"
         firstName="Leonardo"
         lastName="Gonzales"
         username="Leonardog"
       />
        <SuggestionCard 
-        profileImage="/public/profile_icon.png"
+        profileImage="/profile_icon.png"
         firstName="Leonardo"
         lastName="Gonzales"
         username="Leonardog"
