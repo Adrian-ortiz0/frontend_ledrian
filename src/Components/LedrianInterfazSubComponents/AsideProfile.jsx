@@ -96,8 +96,6 @@ export const AsideProfile = ({ usuario }) => {
           text="Messages"
           navigateTo="/messages"
         />
-      </div>
-
       <div className="flex flex-col w-full justify-around">
         <NavButton
           imagePath={usuario.photo}
@@ -114,6 +112,8 @@ export const AsideProfile = ({ usuario }) => {
           onClick={handleLogout}
         />
       </div>
+      </div>
+
 
       {isCreateModalOpen && (
         <CreateModal onClose={handleCloseModal} usuario={usuario} />
