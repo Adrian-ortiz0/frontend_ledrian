@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
 import { NotificationsList } from "../Nofications/NotificationsList";
-// import { Notifications } from "../Notifications/Notication";
-// import { NotificationComponent} from "../Nofications/NotificationComponent"
+
 
 
 const NavButton = ({ imagePath, altText, text, navigateTo, onClick, width = 20, height = 20 }) => {
@@ -73,7 +72,6 @@ export const AsideProfile = ({ usuario }) => {
           text="Notifications"
           onClick={handleNoti}
         />
-        {/* <NotificationComponent userId ={2}/> */}
         <NavButton
           imagePath="/public/friends_icon.png"
           altText="Friends Icon"
