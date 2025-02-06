@@ -56,12 +56,12 @@ export const AsideProfile = ({ usuario }) => {
   };
 
   return (
-    <aside className="w-[15vw] h-[100vh] fixed flex flex-col justify-around items-center bg-gray-800 text-gray-200 ">
+    <aside className="w-[15vw] h-full fixed flex flex-col justify-around items-center bg-gray-800 text-gray-200 ">
       <div className="flex flex-col w-full justify-around">
         <span className="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 italic font-bold pl-[2vw] pt-10 pb-5">Ledrian</span>
 
         <NavButton
-          imagePath="../public/home_icon.png"
+          imagePath="/public/home_icon.png"
           altText="Home Icon"
           text="Home"
           navigateTo="/home"
