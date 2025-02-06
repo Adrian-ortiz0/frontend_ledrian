@@ -28,6 +28,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useUser } from "../../UserContext";
 import AxiosConfiguration from "../../AxiosConfiguration";
 
+// Componente para el modal de comentarios
 const CommentsModal = ({
   open,
   handleClose,
@@ -46,11 +47,14 @@ const CommentsModal = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCommentText, setEditCommentText] = useState("");
+
   useEffect(() => {
-    const normalizedComments = (existingComments || []).map(comment => ({
+    const normalizedComments = (existingComments || []).map((comment) => ({
       ...comment,
       userGiving: comment.userGiving || { id: comment.userGivingId },
-      username: comment.username || comment.userGiving?.username
+      username:  usuario.username ||"Usuario desconocido",
     }));
     setCommentsList(normalizedComments);
   }, [existingComments]);
@@ -62,19 +66,22 @@ const CommentsModal = ({
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setSelectedCommentId(null);
+    if (!isEditing) {
+      setSelectedCommentId(null);
+    }
   };
 
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
 
+    let tempComment;
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken || !usuario?.id) return;
 
       setIsSubmitting(true);
 
-      const tempComment = {
+      tempComment = {
         tempId: Date.now(),
         comment: comment.trim(),
         date: new Date().toISOString(),
@@ -82,7 +89,7 @@ const CommentsModal = ({
         publicationId: postId,
         typeInterationId: 2,
         username: usuario.username,
-        userGivingId: usuario.id 
+        userGivingId: usuario.id,
       };
 
       setCommentsList((prev) => [tempComment, ...prev]);
@@ -111,9 +118,95 @@ const CommentsModal = ({
       setSnackbarMessage("Error al agregar comentario");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
-      setCommentsList((prev) => prev.filter((c) => c.tempId !== tempComment.tempId));
+      setCommentsList((prev) =>
+        prev.filter((c) => c.tempId !== tempComment?.tempId)
+      );
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteComment = async () => {
+    handleMenuClose();
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) return;
+
+      const commentToDelete = commentsList.find(
+        (c) => (c.id || c.tempId) === selectedCommentId
+      );
+      if (!commentToDelete) return;
+
+      if (commentToDelete.id) {
+        await AxiosConfiguration.delete(`interations/${selectedCommentId}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+      }
+      setCommentsList((prev) =>
+        prev.filter((c) => (c.id || c.tempId) !== selectedCommentId)
+      );
+
+      setSnackbarMessage("Comentario eliminado");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      if (!isEditing) setSelectedCommentId(null);
+    } catch (error) {
+      console.error("Error eliminando comentario:", error);
+      setSnackbarMessage("Error al eliminar el comentario");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleEditMenuItemClick = () => {
+    const commentToEdit = commentsList.find(
+      (c) => (c.id || c.tempId) === selectedCommentId
+    );
+    if (commentToEdit) {
+      setEditCommentText(commentToEdit.comment);
+      setIsEditing(true);
+    }
+    setAnchorEl(null);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCommentText("");
+    setSelectedCommentId(null);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) return;
+
+      await AxiosConfiguration.patch(
+        `interations/${selectedCommentId}/comment`,
+        { comment: editCommentText },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
+
+      setCommentsList((prev) =>
+        prev.map((c) => {
+          if ((c.id || c.tempId) === selectedCommentId) {
+            return { ...c, comment: editCommentText };
+          }
+          return c;
+        })
+      );
+
+      setSnackbarMessage("Comentario editado");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Error al editar comentario:", error);
+      setSnackbarMessage("Error al editar comentario");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    } finally {
+      setIsEditing(false);
+      setEditCommentText("");
+      setSelectedCommentId(null);
     }
   };
 
@@ -181,7 +274,9 @@ const CommentsModal = ({
             color="primary"
             onClick={handleCommentSubmit}
             disabled={isSubmitting || !comment.trim()}
-            endIcon={isSubmitting && <CircularProgress size={20} color="inherit" />}
+            endIcon={
+              isSubmitting && <CircularProgress size={20} color="inherit" />
+            }
           >
             Enviar
           </Button>
@@ -191,52 +286,106 @@ const CommentsModal = ({
 
         <Box sx={{ mb: 2 }}>
           {commentsList.length === 0 ? (
-            <Typography variant="body2" sx={{ color: "#b0b0b0", textAlign: "center" }}>
+            <Typography
+              variant="body2"
+              sx={{ color: "#b0b0b0", textAlign: "center" }}
+            >
               Aún no hay comentarios.
             </Typography>
           ) : (
-            commentsList.map((comment) => (
-              <Box 
-                key={comment.id || comment.tempId} 
+            commentsList.map((commentItem) => (
+              <Box
+                key={commentItem.id || commentItem.tempId}
                 sx={{ mb: 2, position: "relative" }}
               >
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      mb: 0.5,
+                    }}
+                  >
                     <Avatar
-                      src={comment.userGiving?.profilePic}
+                      src={commentItem.userGiving?.profilePic}
                       sx={{ width: 24, height: 24 }}
                     />
-                    <Typography variant="body2" sx={{ color: "white", fontWeight: 500 }}>
-                      {comment.username || comment.userGiving?.username}
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "white", fontWeight: 500 }}
+                    >
+                      {commentItem.username ||
+                        (commentItem.userGiving && commentItem.userGiving.username) ||
+                        "Usuario desconocido"}
                     </Typography>
                   </Box>
 
-                  {(usuario?.id === comment.userGiving?.id || usuario?.id === comment.userGivingId) && (
+                  {(usuario?.id === commentItem.userGiving?.id ||
+                    usuario?.id === commentItem.userGivingId) && (
                     <IconButton
                       size="small"
-                      sx={{ 
+                      sx={{
                         color: "#b0b0b0",
-                        '&:hover': { 
+                        "&:hover": {
                           color: "white",
-                          backgroundColor: "rgba(255, 255, 255, 0.1)"
-                        }
+                          backgroundColor: "rgba(255, 255, 255, 0.1)",
+                        },
                       }}
-                      onClick={(e) => handleMenuOpen(e, comment.id || comment.tempId)}
+                      onClick={(e) =>
+                        handleMenuOpen(e, commentItem.id || commentItem.tempId)
+                      }
                     >
                       <MoreVertIcon fontSize="small" />
                     </IconButton>
                   )}
                 </Box>
 
-                {/* Contenido del comentario */}
-                <Typography variant="body2" sx={{ color: "white", ml: 4 }}>
-                  {comment.comment}
-                </Typography>
-                <Typography 
-                  variant="caption" 
+                {isEditing &&
+                (commentItem.id || commentItem.tempId) === selectedCommentId ? (
+                  <Box sx={{ ml: 4 }}>
+                    <TextField
+                      value={editCommentText}
+                      onChange={(e) => setEditCommentText(e.target.value)}
+                      variant="filled"
+                      size="small"
+                      fullWidth
+                      sx={{ backgroundColor: "#334155", borderRadius: 1 }}
+                      InputProps={{ style: { color: "white" } }}
+                    />
+                    <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={handleSaveEdit}
+                      >
+                        Guardar
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={handleCancelEdit}
+                      >
+                        Cancelar
+                      </Button>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Typography variant="body2" sx={{ color: "white", ml: 4 }}>
+                    {commentItem.comment}
+                  </Typography>
+                )}
+                <Typography
+                  variant="caption"
                   sx={{ color: "#b0b0b0", ml: 4, display: "block" }}
                 >
-                  {new Date(comment.date).toLocaleDateString("es-ES", {
+                  {new Date(commentItem.date).toLocaleDateString("es-ES", {
                     day: "2-digit",
                     month: "short",
                     hour: "2-digit",
@@ -253,33 +402,33 @@ const CommentsModal = ({
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
           sx={{
-            '& .MuiPaper-root': {
-              backgroundColor: '#334155',
-              color: 'white',
-              boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.5)',
-              minWidth: '120px',
+            "& .MuiPaper-root": {
+              backgroundColor: "#334155",
+              color: "white",
+              boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.5)",
+              minWidth: "120px",
             },
           }}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem 
-            onClick={handleMenuClose}
+          <MenuItem
+            onClick={handleEditMenuItemClick}
             sx={{
-              '&:hover': { backgroundColor: '#3a4a5c' },
-              fontSize: '0.875rem',
+              "&:hover": { backgroundColor: "#3a4a5c" },
+              fontSize: "0.875rem",
               py: 1,
             }}
           >
             Editar
           </MenuItem>
-          <MenuItem 
-            onClick={handleMenuClose}
+          <MenuItem
+            onClick={handleDeleteComment}
             sx={{
-              '&:hover': { backgroundColor: '#3a4a5c' },
-              fontSize: '0.875rem',
+              "&:hover": { backgroundColor: "#3a4a5c" },
+              fontSize: "0.875rem",
               py: 1,
-              color: '#ff6666',
+              color: "#ff6666",
             }}
           >
             Eliminar
@@ -295,7 +444,8 @@ const CommentsModal = ({
           <Alert
             severity={snackbarSeverity}
             sx={{
-              backgroundColor: snackbarSeverity === "success" ? "#4caf50" : "#f44336",
+              backgroundColor:
+                snackbarSeverity === "success" ? "#4caf50" : "#f44336",
               color: "#fff",
               "& .MuiAlert-icon": { color: "#fff" },
             }}
@@ -307,6 +457,7 @@ const CommentsModal = ({
     </Modal>
   );
 };
+
 
 export const FeedPostCard = ({
   username,
@@ -334,10 +485,12 @@ export const FeedPostCard = ({
     setIsLiked(!!userInteraction);
     setInteractionId(userInteraction?.id || null);
 
-    const initialLikes = interations?.filter((i) => i.typeInterationId === 1).length || 0;
+    const initialLikes =
+      interations?.filter((i) => i.typeInterationId === 1).length || 0;
     setOptimisticLikes(initialLikes);
 
-    const initialComments = interations?.filter((i) => i.typeInterationId === 2) || [];
+    const initialComments =
+      interations?.filter((i) => i.typeInterationId === 2) || [];
     setComments(initialComments);
   }, [interations, usuario?.id]);
 
@@ -393,8 +546,8 @@ export const FeedPostCard = ({
 
   const formatDate = (dateString) => {
     if (!dateString) return "Fecha desconocida";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("es-ES", {
+    const dateObj = new Date(dateString);
+    return dateObj.toLocaleDateString("es-ES", {
       day: "2-digit",
       month: "long",
       year: "numeric",
