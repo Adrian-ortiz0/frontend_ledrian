@@ -8,8 +8,8 @@ import { MobileNavBar } from "./Mobile/MobileAside";
 export const MyFollowers = () => {
   const { usuario } = useUser();
   return (
-    <main className="">
-      <section className=" hidden lg:bg-gray-900  h-screen lg:flex h-screen">
+    <main className="bg-gray-900  h-screen flex">
+      <section className=" hidden lg:bg-gray-900 h-screen lg:flex h-screen">
         <AsideProfile usuario={usuario} />
         <FollowersFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />

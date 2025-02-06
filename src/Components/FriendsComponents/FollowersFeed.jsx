@@ -4,9 +4,7 @@ export const FollowersFeed = ({ usuario }) => {
   const followersIds = usuario?.followersIds || [];
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4">
-      <h2 className="text-white text-xl font-bold mb-6">Tus seguidores</h2>
-      
+    <div className="flex justify-center w-full lg:flex-col lg:w-[60vw] lg:p-10 lg:left-[15vw] lg:fixed">
       {followersIds.length === 0 ? (
         <p className="text-gray-400 text-center">Aún no tienes seguidores</p>
       ) : (
