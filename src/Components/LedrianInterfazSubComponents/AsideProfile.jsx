@@ -3,8 +3,6 @@ import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
 import { NotificationsList } from "../Nofications/NotificationsList";
 
-
-
 const NavButton = ({ imagePath, altText, text, navigateTo, onClick, width = 20, height = 20 }) => {
   const navigate = useNavigate();
 
@@ -56,42 +54,44 @@ export const AsideProfile = ({ usuario }) => {
   };
 
   return (
-    <aside className="w-[15vw] h-[100vh] fixed flex flex-col justify-between items-center bg-gray-800 text-gray-200 ">
+    <aside className="w-[15vw] h-[100vh] fixed flex flex-col justify-between items-center bg-gray-800 text-gray-200">
       <div className="flex flex-col w-full justify-around">
-        <span className="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 italic font-bold pl-[2vw] pt-10 pb-5">Ledrian</span>
+        <span className="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 italic font-bold pl-[2vw] pt-10 pb-5">
+          Ledrian
+        </span>
 
         <NavButton
-          imagePath="/public/home_icon.png"
+          imagePath="/home_icon.png"
           altText="Home Icon"
           text="Home"
           navigateTo="/home"
         />
         <NavButton
-          imagePath="public/notification_icon.png"
-          altText="Messages Icon"
+          imagePath="/notification_icon.png"
+          altText="Notifications Icon"
           text="Notifications"
           onClick={handleNoti}
         />
         <NavButton
-          imagePath="public/friends_icon.png"
+          imagePath="/friends_icon.png"
           altText="Friends Icon"
           text="Followers"
           navigateTo="/myfollowers"
         />
         <NavButton
-          imagePath="/public/friends_icon.png"
+          imagePath="/friends_icon.png"
           altText="Friends Icon"
           text="Following"
           navigateTo="/friends"
         />
         <NavButton
-          imagePath="/public/tabs_icon.png"
+          imagePath="/tabs_icon.png"
           altText="Create Icon"
           text="Create"
           onClick={handleCreate}
         />
         <NavButton
-          imagePath="/public/conversation_icon.png"
+          imagePath="/conversation_icon.png"
           altText="Messages Icon"
           text="Messages"
           navigateTo="/messages"
@@ -100,15 +100,15 @@ export const AsideProfile = ({ usuario }) => {
 
       <div className="flex flex-col w-full justify-around">
         <NavButton
-          imagePath={usuario.photo}
+          imagePath={usuario.photo} // Asegúrate que este valor sea una URL válida para la imagen del usuario
           altText="User Photo"
           text={`${usuario.name} ${usuario.lastname}`}
-          navigateTo="../profile"
+          navigateTo="/profile"
           width={40}
           height={40}
         />
         <NavButton
-          imagePath="/public/logout_icon.png"
+          imagePath="/logout_icon.png"
           altText="Log out Icon"
           text="Log out"
           onClick={handleLogout}
