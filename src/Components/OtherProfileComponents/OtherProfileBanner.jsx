@@ -7,6 +7,8 @@ export const OtherProfileBanner = ({ usuario }) => {
   const [follow, setFollow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(usuario);
+
   useEffect(() => {
     if (
       loggedUser &&
@@ -89,6 +91,11 @@ export const OtherProfileBanner = ({ usuario }) => {
     }
   };
 
+  // Asegúrate de que la imagen tenga la URL completa
+  const profileImagePath = usuario.photo.startsWith("http")
+    ? usuario.photo
+    : `http://localhost:8083/api/publications/images/${usuario.photo}`;
+
   return (
     <div className="w-full flex flex-col items-center">
       <div
@@ -99,7 +106,7 @@ export const OtherProfileBanner = ({ usuario }) => {
       <div className="w-full gap-7 max-w-4xl bg-gray-100 rounded-lg shadow-md -mt-16 p-6 flex flex-col items-center">
         <button className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden">
           <img
-            src={usuario.photo}
+            src={profileImagePath}
             alt={`${usuario.name} ${usuario.lastname}`}
             className="w-full h-full object-cover"
           />
