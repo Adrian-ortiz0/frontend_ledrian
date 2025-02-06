@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
+import { NotificationsList } from "../Nofications/NotificationsList";
 // import { Notifications } from "../Notifications/Notication";
 // import { NotificationComponent} from "../Nofications/NotificationComponent"
 
@@ -66,12 +67,12 @@ export const AsideProfile = ({ usuario }) => {
           text="Home"
           navigateTo="/home"
         />
-        {/* <NavButton
+        <NavButton
           imagePath="/public/notification_icon.png"
           altText="Messages Icon"
           text="Notifications"
           onClick={handleNoti}
-        /> */}
+        />
         {/* <NotificationComponent userId ={2}/> */}
         <NavButton
           imagePath="/public/friends_icon.png"
@@ -119,9 +120,9 @@ export const AsideProfile = ({ usuario }) => {
       {isCreateModalOpen && (
         <CreateModal onClose={handleCloseModal} usuario={usuario} />
       )}
-      {/* {isNotificationOpen && (
-        <Notifications onClose={handleNotiClose} usuario={usuario} />
-      )} */}
+      {isNotificationOpen && (
+        <NotificationsList onClose={handleNotiClose} usuario={usuario} />
+      )}
     </aside>
   );
 };
