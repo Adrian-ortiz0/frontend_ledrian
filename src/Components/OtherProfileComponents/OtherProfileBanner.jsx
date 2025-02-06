@@ -32,7 +32,7 @@ export const OtherProfileBanner = ({ usuario }) => {
 
     if (follow) {
       AxiosConfiguration.delete(
-        `/follows/unfollow?followerId=${loggedUser.id}&followingId=${usuario.id}`,
+        `/follows/unfollow?followerId=${usuario.id}&followingId=${loggedUser.id}`,
         { headers: { Authorization: `Bearer ${authToken}` } }
       )
         .then((response) => {
