@@ -27,16 +27,16 @@ export const FeedCreate = () => {
         </div>
         <div className="w-full flex justify-between items-center mt-6">
           <div className="flex gap-8">
-            <button className="bg-transparent border-none cursor-pointer">
+            {/* <button className="bg-transparent border-none cursor-pointer">
               <img src="/public/image_icon.png" alt="Image Icon" width={25} height={25} />
             </button>
             <button className="bg-transparent border-none cursor-pointer">
               <img src="/public/emoji_icon.png" alt="Emoji Icon" width={25} height={25} />
-            </button>
+            </button> */}
           </div>
-          <button className="bg-purple-600 text-white rounded-lg px-6 py-3 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-00">
+          {/* <button className="bg-purple-600 text-white rounded-lg px-6 py-3 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-00">
             Post
-          </button>
+          </button> */}
         </div>
       </div>
       {isCreateModalOpen && (

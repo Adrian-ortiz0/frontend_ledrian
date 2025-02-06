@@ -53,7 +53,7 @@ export const CreateModal = ({ onClose, usuario }) => {
   };
 
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[9999]'>
+    <div className='fixed inset-0 bg-black/50 bg-opacity-70 flex justify-center items-center z-[9999]'>
   <div className='bg-white rounded-lg shadow-lg w-[500px] max-w-[90%]'>
     <div className='flex justify-between items-center p-4 border-b border-gray-200'>
       <h2 className='text-lg font-semibold'>Create a new post</h2>
