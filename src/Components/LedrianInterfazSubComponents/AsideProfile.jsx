@@ -61,19 +61,19 @@ export const AsideProfile = ({ usuario }) => {
         <span className="text-4xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 italic font-bold pl-[2vw] pt-10 pb-5">Ledrian</span>
 
         <NavButton
-          imagePath="/public/home_icon.png"
+          imagePath="../public/home_icon.png"
           altText="Home Icon"
           text="Home"
           navigateTo="/home"
         />
         <NavButton
-          imagePath="/public/notification_icon.png"
+          imagePath="public/notification_icon.png"
           altText="Messages Icon"
           text="Notifications"
           onClick={handleNoti}
         />
         <NavButton
-          imagePath="/public/friends_icon.png"
+          imagePath="..public/friends_icon.png"
           altText="Friends Icon"
           text="Followers"
           navigateTo="/myfollowers"
