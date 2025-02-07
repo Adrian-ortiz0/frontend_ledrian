@@ -28,7 +28,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useUser } from "../../UserContext";
 import AxiosConfiguration from "../../AxiosConfiguration";
 
-// Componente para el modal de comentarios
 const CommentsModal = ({
   open,
   handleClose,

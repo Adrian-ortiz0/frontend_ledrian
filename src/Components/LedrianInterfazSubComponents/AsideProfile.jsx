@@ -70,7 +70,6 @@ export const AsideProfile = ({ usuario }) => {
     navigate("/login");
   };
 
-  // Ruta base para la imagen del usuario
   const profileImagePath = usuario.photo.startsWith("http")
     ? usuario.photo
     : `http://localhost:8083/api/publications/images/${usuario.photo}`;
