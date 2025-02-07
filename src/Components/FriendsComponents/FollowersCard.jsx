@@ -47,7 +47,7 @@ export const FollowersCard = ({ followerId }) => {
 
         actualizarUsuario({
           ...loggedUser,
-          followingIds: loggedUser.followingIds.filter(id => id !== followerId),
+          followingIds: loggedUser.followingIds.filter((id) => id !== followerId),
         });
       } else {
         await AxiosConfiguration.post(
@@ -74,25 +74,25 @@ export const FollowersCard = ({ followerId }) => {
     }
   };
 
-  if (!userInfo) return <div className="text-white p-4">Cargando...</div>;
+  if (!userInfo)
+    return <div className="text-white p-4">Cargando...</div>;
 
-  // Construir la URL de la imagen del perfil
   const profileImagePath = userInfo.photo?.startsWith("http")
     ? userInfo.photo
     : `http://localhost:8083/api/publications/images/${userInfo.photo}`;
 
   return (
-    <div className="bg-[#1E1E1E] rounded-2xl shadow-lg p-5 w-full max-w-md mx-auto mb-6 transition-all duration-300 hover:shadow-2xl">
+    <div className="bg-[#1e2939] rounded-2xl shadow-lg p-5 w-full max-w-md mx-auto mb-6 transition-transform transform hover:scale-105 hover:shadow-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <img
             src={profileImagePath || "/default-profile.png"}
             alt={userInfo.username}
-            className="w-14 h-14 rounded-full object-cover border-2 border-gray-700 hover:border-gray-500 transition-all"
+            className="w-16 h-16 rounded-full object-cover border-2 border-gray-600 hover:border-gray-400 transition-colors"
           />
           <div>
-            <p className="text-white font-semibold text-lg">{userInfo.name}</p>
-            <p className="text-gray-400 text-sm">@{userInfo.username}</p>
+            <p className="text-white font-bold text-xl">{userInfo.name}</p>
+            <p className="text-gray-300 text-sm">@{userInfo.username}</p>
           </div>
         </div>
 
@@ -103,14 +103,24 @@ export const FollowersCard = ({ followerId }) => {
           disabled={isLoading}
           sx={{
             textTransform: "none",
-            fontSize: "0.875rem",
+            fontSize: "0.9rem",
             borderRadius: "12px",
-            px: 2.5,
+            px: 3,
             py: 1,
+            boxShadow: "none",
             transition: "all 0.3s",
+            "&:hover": {
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
+            },
           }}
         >
-          {isLoading ? <CircularProgress size={22} color="inherit" /> : isFollowing ? "Unfollow" : "Follow"}
+          {isLoading ? (
+            <CircularProgress size={22} color="inherit" />
+          ) : isFollowing ? (
+            "Unfollow"
+          ) : (
+            "Follow"
+          )}
         </Button>
       </div>
     </div>

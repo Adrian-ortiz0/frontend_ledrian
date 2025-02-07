@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { FollowersCard } from '../FriendsComponents/FollowersCard';
+import { useUser } from '../../UserContext';
 
 
 const SuggestionCard = ({ profileImage, firstName, lastName, username }) => {
     const [isFollowing, setIsFollowing] = useState(false);
-  
+
     const handleFollow = () => {
       setIsFollowing(!isFollowing); 
     };
@@ -37,27 +39,19 @@ const SuggestionCard = ({ profileImage, firstName, lastName, username }) => {
   };
   
 
-export const Suggestions = () => {
-  return (
-    <div className=''>
-       <SuggestionCard 
-        profileImage="/profile_icon.png"
-        firstName="Leonardo"
-        lastName="Gonzales"
-        username="Leonardog"
-      />
-       <SuggestionCard 
-        profileImage="/profile_icon.png"
-        firstName="Leonardo"
-        lastName="Gonzales"
-        username="Leonardog"
-      />
-       <SuggestionCard 
-        profileImage="/profile_icon.png"
-        firstName="Leonardo"
-        lastName="Gonzales"
-        username="Leonardog"
-      />
-    </div>
-  )
-}
+  export const Suggestions = () => {
+    const { usuario } = useUser();
+    const followersIds = usuario?.followersIds || [];
+  
+    return (
+      <div className="space-y-4">
+        {followersIds.length > 0 ? (
+          followersIds.map((followerId) => (
+            <FollowersCard key={followerId} followerId={followerId} />
+          ))
+        ) : (
+          <div className="text-white">No hay followers para mostrar.</div>
+        )}
+      </div>
+    );
+  };
