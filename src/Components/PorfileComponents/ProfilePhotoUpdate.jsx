@@ -6,6 +6,14 @@ export const ProfilePhotoUpdate = () => {
   const fileInputRef = useRef(null);
   const { usuario, actualizarUsuario } = useUser();
 
+  const defaultPhotoURL = "https://cdn-icons-png.freepik.com/512/5997/5997002.png";
+
+  const isDefaultPhoto = usuario.photo === defaultPhotoURL;
+
+  const photoURL = isDefaultPhoto 
+    ? defaultPhotoURL 
+    : `http://localhost:8083/api/publications/images/${usuario.photo}`;
+
   const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -37,7 +45,7 @@ export const ProfilePhotoUpdate = () => {
   return (
     <div>
       <img
-        src={`http://localhost:8083/api/publications/images/${usuario.photo}`}
+        src={photoURL} 
         alt="Foto de perfil"
         onClick={handleClick}
         style={{
