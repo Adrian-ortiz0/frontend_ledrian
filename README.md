@@ -94,6 +94,8 @@ mvn spring-boot:run
 
 ```
 
+Link to backend repo: https://github.com/DLeonardoG/Ledrian 
+
 🌍 Live Deployment
 Experience Ledrian now!
 👉 Live Demo
