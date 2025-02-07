@@ -88,6 +88,8 @@ cd frontend_ledrian
 npm install
 npm start
 
+```
+
 # Backend Setup (Spring Boot)
 # Configure application.properties with your DB credentials
 mvn spring-boot:run
@@ -96,18 +98,17 @@ mvn spring-boot:run
 Experience Ledrian now!
 👉 Live Demo
 
-Environment	URL	Status
-Frontend	https://frontend-ledrian.vercel.app/	🟢 Operational
-Backend	Apache Tomcat Server	🔧 Maintenance
+| Environment | URL | Status |
+|-------------|-----|--------|
+| Frontend | [Vercel Deployment](https://frontend-ledrian.vercel.app/) | 🟢 Operational |
+| Backend | Apache Tomcat Server | 🔧 Maintenance |
 
 📸 Interface Screenshots
 This section will showcase images of Ledrian's interface.
 Placeholder example:
 
 
-(Replace the placeholder URL with actual screenshots when available.)
-
 
 👥 Meet the Creators
-<img src="https://avatars.githubusercontent.com/Adrian-ortiz0" width="100" style="border-radius:50%">	<img src="https://avatars.githubusercontent.com/DavidGonzalez" width="100" style="border-radius:50%">
-Adrian Daniel Ustariz Ortiz	David Leonardo Gonzalez Gomez
+
+Adrian Daniel Ustariz Ortiz	& David Leonardo Gonzalez Gomez
