@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AxiosConfiguration from '../../AxiosConfiguration';
 import { useNavigate } from 'react-router';
+import { SearchResults } from './SearchResults';
 
 export const SearchInput = ({ placeholder = 'Search...' }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -65,29 +66,7 @@ export const SearchInput = ({ placeholder = 'Search...' }) => {
       />
 
       {searchResults.length > 0 && (
-        <div className="absolute top-[6vh] w-full max-w-[400px] bg-white rounded-lg shadow-lg z-10">
-          {searchResults.map((user) => (
-            <div
-              key={user.id}
-              className="p-3 hover:bg-gray-100 cursor-pointer"
-              onClick={() => handleSelectUser(user)}
-            >
-              <div className="flex items-center gap-3">
-                <img
-                  src={user.photo}
-                  alt={`${user.name} ${user.lastname}`}
-                  className="w-10 h-10 rounded-full"
-                />
-                <div>
-                  <p className="font-semibold text-gray-900">
-                    {user.name} {user.lastname}
-                  </p>
-                  <p className="text-sm text-gray-500">@{user.username}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <SearchResults results={searchResults} onSelectUser={handleSelectUser} />
       )}
 
       {isLoading && (

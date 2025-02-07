@@ -76,12 +76,17 @@ export const FollowersCard = ({ followerId }) => {
 
   if (!userInfo) return <div className="text-white p-4">Cargando...</div>;
 
+  // Construir la URL de la imagen del perfil
+  const profileImagePath = userInfo.photo?.startsWith("http")
+    ? userInfo.photo
+    : `http://localhost:8083/api/publications/images/${userInfo.photo}`;
+
   return (
     <div className="bg-[#1E1E1E] rounded-2xl shadow-lg p-5 w-full max-w-md mx-auto mb-6 transition-all duration-300 hover:shadow-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <img
-            src={userInfo.photo || "/default-profile.png"}
+            src={profileImagePath || "/default-profile.png"}
             alt={userInfo.username}
             className="w-14 h-14 rounded-full object-cover border-2 border-gray-700 hover:border-gray-500 transition-all"
           />

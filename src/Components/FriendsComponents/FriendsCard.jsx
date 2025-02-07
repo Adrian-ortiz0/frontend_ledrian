@@ -78,11 +78,16 @@ export const FriendsCard = ({ usuario }) => {
     return <p className="text-white text-center">Cargando...</p>;
   }
 
+  // Construir la URL de la imagen del perfil
+  const profileImagePath = userInfo.photo?.startsWith("http")
+    ? userInfo.photo
+    : `http://localhost:8083/api/publications/images/${userInfo.photo}`;
+
   return (
     <div className="bg-[#1e1e1e] rounded-2xl shadow-md p-6 w-full max-w-md mx-auto mb-6 border border-gray-700 transition-transform hover:scale-105">
       <div className="flex flex-col items-center">
         <img
-          src={userInfo.photo || "/public/profile_icon.png"}
+          src={profileImagePath || "/public/profile_icon.png"}
           alt={userInfo.username}
           className="w-24 h-24 rounded-full object-cover border-4 border-gray-500 shadow-md"
         />
