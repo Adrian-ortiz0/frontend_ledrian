@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FollowersCard } from "./FollowersCard";
 
 export const FollowersFeed = ({ usuario }) => {
