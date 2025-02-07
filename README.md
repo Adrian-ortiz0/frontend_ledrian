@@ -88,11 +88,11 @@ cd frontend_ledrian
 npm install
 npm start
 
-```
-
 # Backend Setup (Spring Boot)
 # Configure application.properties with your DB credentials
 mvn spring-boot:run
+
+```
 
 🌍 Live Deployment
 Experience Ledrian now!
