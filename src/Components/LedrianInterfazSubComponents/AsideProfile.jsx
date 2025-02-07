@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
-import { NotificationsList } from "../Nofications/NotificationsList";
+import NotificationsList from "../Nofications/NotificationsList";
 
 const NavButton = ({
   imagePath,

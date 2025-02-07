@@ -1,24 +1,12 @@
-import React from 'react';
+import { format } from 'date-fns';
 
-export const NotificationItem = ({ notification, markAsSeen }) => {
-  const { id, username, comment, date, check } = notification;
-
+const NotificationItem = ({ notification }) => {
   return (
-    <div className="p-4 border-b border-gray-700">
-      <div className="flex justify-between items-center">
-        <div>
-          <p className="text-sm text-gray-300">{username} - {new Date(date).toLocaleString()}</p>
-          <p className="text-white">{comment}</p>
-        </div>
-        {!check && (
-          <button
-            onClick={() => markAsSeen(id)}
-            className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
-          >
-            Mark as seen
-          </button>
-        )}
-      </div>
+    <div className={`p-4 border-b last:border-none ${notification.checked ? 'bg-gray-100' : 'bg-white'}`}>
+      <p className="text-sm text-gray-500">{format(new Date(notification.date), 'PPpp')}</p>
+      <p className="font-medium">{notification.content}</p>
     </div>
   );
 };
+
+export default NotificationItem;
