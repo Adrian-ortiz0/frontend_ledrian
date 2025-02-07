@@ -82,7 +82,7 @@ export const FollowersCard = ({ followerId }) => {
     : `http://localhost:8083/api/publications/images/${userInfo.photo}`;
 
   return (
-    <div className="bg-[#1e2939] rounded-2xl shadow-lg p-5 w-full max-w-md mx-auto mb-6 transition-transform transform hover:scale-105 hover:shadow-2xl">
+    <div className="bg-[#1e2939] rounded-2xl shadow-lg p-5 w-full max-w-md mx-auto mb-6 hover:shadow-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <img
