@@ -17,20 +17,20 @@ export const LedrianInterfaz = () => {
   console.log(usuario);
 
   return (
-    <main className='bg-gray-900  h-screen flex'>
-      <section className='h-screen hidden lg:flex'>
-        <SuggestionsSection usuario={usuario} />
+    <>
+      <section className='h-screen bg-gray-900 hidden lg:grid lg:grid-cols-[1fr_4fr_1fr]'>
+        <AsideProfile usuario={usuario} />
         <Feed usuario={usuario} />
-      <AsideProfile usuario={usuario} />
+        <SuggestionsSection usuario={usuario} />
       </section>
 
-      <section className='lg:hidden'>
+      <section className='lg:hidden h-screen bg-gray-900'>
         <div className='py-3'>
         <SearchInput />
         </div>
         <MobileNavBar/>
         <MobileFeed usuario={usuario} />
       </section>
-    </main>
+      </>
   )
 }

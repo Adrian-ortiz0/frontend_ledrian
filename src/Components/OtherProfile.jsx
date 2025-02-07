@@ -5,6 +5,7 @@ import { useUser } from "../UserContext";
 import { OtherProfileFeed } from "./OtherProfileComponents/OtherProfileFeed";
 import AxiosConfiguration from "../AxiosConfiguration";
 import { useParams } from "react-router";
+import { MobileNavBar } from "./Mobile/MobileAside";
 
 export const OtherProfile = () => {
   const {usuario} = useUser();
@@ -48,11 +49,18 @@ export const OtherProfile = () => {
 
   return (
 
-    
-    <div className="">
+    <>
+    <div className="h-screen bg-gray-100 hidden lg:grid lg:grid-cols-[1fr_4fr_1fr]">
+      <AsideProfile usuario={usuario} /> 
       <OtherProfileFeed usuario={selectedUser} otroUsuario={usuario} /> 
       <SuggestionsSection usuario={usuario} />
-      <AsideProfile usuario={usuario} /> 
     </div>
+    <div className='lg:hidden'>
+    <OtherProfileFeed usuario={selectedUser} otroUsuario={usuario} /> 
+
+
+      <MobileNavBar />
+      </div>
+    </>
   );
 };

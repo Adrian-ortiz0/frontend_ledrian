@@ -105,8 +105,8 @@ const createNotification = async (notificationData) => {
   }
 };
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white w-full max-w-md p-4 rounded-lg shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
+      <div className="bg-gray-800 w-full max-w-md p-4 rounded-lg shadow-lg">
         <div className="flex justify-between items-center border-b pb-2">
           <h2 className="text-lg font-semibold">Notificaciones</h2>
           <button onClick={() => { markAllNotificationsAsRead(usuario.id); onClose(); }} className="text-red-500">Cerrar</button>

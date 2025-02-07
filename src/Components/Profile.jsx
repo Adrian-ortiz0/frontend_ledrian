@@ -14,10 +14,10 @@ export const Profile = () => {
   return (
 
     <div className=''>
-      <div className='hidden lg:flex'>
-        <SuggestionsSection usuario={usuario} />
-        <ProfileFeed usuario={usuario} />
+      <div className='h-screen bg-gray-100 hidden lg:grid lg:grid-cols-[1fr_4fr_1fr]'>
       <AsideProfile usuario={usuario} />
+        <ProfileFeed usuario={usuario} />
+        <SuggestionsSection usuario={usuario} />
       </div>
       <div className='lg:hidden'>
       <ProfileFeed usuario={usuario} />

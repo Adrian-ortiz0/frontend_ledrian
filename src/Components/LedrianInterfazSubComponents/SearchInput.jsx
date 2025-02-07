@@ -47,7 +47,7 @@ export const SearchInput = ({ placeholder = 'Search...' }) => {
   };
 
   return (
-    <div className='flex justify-center items-center h-[6vh] gap-3 pr-[2vw] relative'>
+    <div className='flex justify-around p-5 items-center gap-3'>
       <img 
         src="/search.png" 
         alt="Search icon" 

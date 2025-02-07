@@ -50,7 +50,7 @@ const SuggestionCard = ({ profileImage, firstName, lastName, username }) => {
             <FollowersCard key={followerId} followerId={followerId} />
           ))
         ) : (
-          <div className="text-white">No hay followers para mostrar.</div>
+          <div className="text-white p-10 text-center">No hay followers para mostrar.</div>
         )}
       </div>
     );
