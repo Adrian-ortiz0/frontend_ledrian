@@ -72,7 +72,7 @@ export const AsideProfile = ({ usuario }) => {
 
   const profileImagePath = usuario.photo.startsWith("http")
     ? usuario.photo
-    : `http://localhost:8083/api/publications/images/${usuario.photo}`;
+    : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${usuario.photo}`;
 
   return (
     <aside className="w-[15vw] h-[100vh] fixed flex flex-col justify-between items-center bg-gray-800 text-gray-200">

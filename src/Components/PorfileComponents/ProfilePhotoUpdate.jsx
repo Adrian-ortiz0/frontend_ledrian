@@ -12,7 +12,7 @@ export const ProfilePhotoUpdate = () => {
 
   const photoURL = isDefaultPhoto 
     ? defaultPhotoURL 
-    : `http://localhost:8083/api/publications/images/${usuario.photo}`;
+    : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${usuario.photo}`;
 
   const handleClick = () => {
     if (fileInputRef.current) {

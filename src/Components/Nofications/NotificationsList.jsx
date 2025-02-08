@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import NotificationItem from './NotificationItem';
 
-const API_URL = 'http://localhost:8083/notifications';
+const API_URL = 'http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/notifications';
 
 const NotificationsList = ({ onClose, usuario }) => {
-  const API_URL = 'http://localhost:8083/api/notifications';
+  const API_URL = 'http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/notifications';
 
 // Estado para las notificaciones
 const [notifications, setNotifications] = useState([]);

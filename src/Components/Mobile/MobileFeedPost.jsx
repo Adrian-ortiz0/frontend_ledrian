@@ -6,7 +6,7 @@ export const FeedPostsMobile = ({ usuario }) => {
   const [followingPosts, setFollowingPosts] = useState([]);
 
   const fetchImage = async (photo) => {
-    const imageUrl = `http://localhost:8083/api/publications/images/${photo}`;
+    const imageUrl = `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${photo}`;
     const response = await fetch(imageUrl, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,

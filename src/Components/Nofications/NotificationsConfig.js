@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-const API_URL = 'http://localhost:8083/notifications';
+const API_URL = 'http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/notifications';
 
 // Estado para las notificaciones
 const [notifications, setNotifications] = useState([]);

@@ -8,7 +8,7 @@ export const SearchResults = ({ results, onSelectUser }) => {
       {results.map((user) => {
         const profileImagePath = user.photo?.startsWith("http")
           ? user.photo
-          : `http://localhost:8083/api/publications/images/${user.photo}`;
+          : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${user.photo}`;
 
         return (
           <div

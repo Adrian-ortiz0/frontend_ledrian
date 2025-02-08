@@ -16,7 +16,7 @@ export const FeedCreate = () => {
 
   const profileImagePath = usuario.photo.startsWith("http")
     ? usuario.photo
-    : `http://localhost:8083/api/publications/images/${usuario.photo}`;
+    : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${usuario.photo}`;
 
   return (
     <div className="w h-full flex flex-col items-center">

@@ -37,7 +37,7 @@ const MiniHistory = ({ followerId, size = 70 }) => {
 
   const profileImagePath = userInfo.photo?.startsWith("http")
     ? userInfo.photo
-    : `http://localhost:8083/api/publications/images/${userInfo.photo}`;
+    : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${userInfo.photo}`;
 
   return (
     <div className="flex flex-col items-center">

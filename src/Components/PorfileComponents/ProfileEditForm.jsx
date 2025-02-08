@@ -55,7 +55,7 @@ export const ProfileEditForm = ({ usuario, onClose }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8083/api/users/edit/${usuario.id}`,
+        `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/users/edit/${usuario.id}`,
         userProfileDTO,
         { headers }
       );

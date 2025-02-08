@@ -94,7 +94,7 @@ export const OtherProfileBanner = ({ usuario }) => {
   // Asegúrate de que la imagen tenga la URL completa
   const profileImagePath = usuario.photo.startsWith("http")
     ? usuario.photo
-    : `http://localhost:8083/api/publications/images/${usuario.photo}`;
+    : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${usuario.photo}`;
 
   return (
     <div className="w-full flex flex-col items-center">
