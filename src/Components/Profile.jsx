@@ -13,7 +13,7 @@ export const Profile = () => {
   return (
 
     <div className=''>
-      <div className='h-screen bg-gray-100 overflow-y-hidden hidden lg:grid lg:grid-cols-[1fr_4fr_1fr]'>
+      <div className='h-screen bg-gray-100 hidden lg:grid lg:grid-cols-[1fr_4fr_1fr]'>
       <AsideProfile usuario={usuario} />
         <ProfileFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />

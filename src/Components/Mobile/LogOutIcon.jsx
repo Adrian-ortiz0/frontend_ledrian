@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { NavButton } from './MobileAside';
 
 
-export const LogOutButton = () => {
+export const LogOutButton = ({classes}) => {
 
     const navigate = useNavigate();
     
@@ -13,14 +13,12 @@ export const LogOutButton = () => {
         navigate("/login");
       };
 
-    return (
-        <>
-        <NavButton
-        imagePath="/logout_icon.png"
-        altText="Log out Icon"
-        text="Log Out"
-        onClick={handleLogout}
-      />
-      </>
-      )
+  return (
+    <button
+      onClick={handleLogout}
+      className="flex flex-col items-center justify-center bg-transparent border-none cursor-pointer text-white transition duration-300 p-2 hover:bg-[#ffffff18]"
+    >
+      <img src="https://cdn-icons-png.flaticon.com/256/4436/4436646.png" alt="Log out" width="25px" height="25px" />
+    </button>
+  );
 }

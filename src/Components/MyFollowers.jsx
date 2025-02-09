@@ -9,7 +9,7 @@ export const MyFollowers = () => {
   const { usuario } = useUser();
   return (
     <>
-      <section className="overflow-y-hidden h-screen bg-gray-900 hidden lg:grid lg:grid-cols-[1fr_4fr_1fr]">
+      <section className=" h-screen bg-gray-900 hidden lg:grid lg:grid-cols-[1fr_4fr_1fr]">
         <AsideProfile usuario={usuario} />
         <FollowersFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />

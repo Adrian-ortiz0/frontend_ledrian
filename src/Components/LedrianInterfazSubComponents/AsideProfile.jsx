@@ -75,7 +75,7 @@ export const AsideProfile = ({ usuario }) => {
     : `http://localhost:8083/api/publications/images/${usuario.photo}`;
 
   return (
-    <aside className=" h-[100vh] flex flex-col justify-between items-center bg-gray-800 text-gray-200">
+    <aside className="overflow-y-scroll h-full flex flex-col justify-between items-center bg-gray-800 text-gray-200">
       <div className="flex flex-col w-full justify-around">
         <span className="text-4xl text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 italic font-bold pt-10 pb-4">
           Ledrian
