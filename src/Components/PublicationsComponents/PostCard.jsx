@@ -14,24 +14,25 @@ export const PostCard = ({ img, description, username, date, interations, postId
 
   return (
     <>
-    {isModalOpen && (
-      <PostCardModalPc
-        img={img}
-        description={description}
-        username={username}
-        onClose={closeModal}
-        date={date}
-        interations={interations}
-        postId={postId}
-      />
-    )}
-<div className="flex justify-center overflow-y-scroll items-center w-full h-full">
-  <button className="w-full cursor-pointer h-full flex justify-center items-center" onClick={openModal}>
-    <img src={img} alt={description} className="w-full h-full object-cover" />
-  </button>
-</div>
-
-
+      {isModalOpen && (
+        <PostCardModalPc
+          img={img}
+          description={description}
+          username={username}
+          onClose={closeModal}
+          date={date}
+          interations={interations}
+          postId={postId}
+        />
+      )}
+      <div className="flex justify-center items-center w-60 h-60">
+        <button 
+          className="w-full h-full cursor-pointer flex justify-center items-center" 
+          onClick={openModal}
+        >
+          <img src={img} alt={description} className="w-full h-full object-cover" />
+        </button>
+      </div>
     </>
   );
 };
