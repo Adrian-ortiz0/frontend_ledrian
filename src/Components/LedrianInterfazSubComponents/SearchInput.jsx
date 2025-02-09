@@ -3,7 +3,7 @@ import AxiosConfiguration from '../../AxiosConfiguration';
 import { useNavigate } from 'react-router';
 import { SearchResults } from './SearchResults';
 
-export const SearchInput = ({ placeholder = 'Search...' }) => {
+export const SearchInput = ({ placeholder = 'Search...' , padding = 'p-5'}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,8 +46,10 @@ export const SearchInput = ({ placeholder = 'Search...' }) => {
     navigate(`../user/${user.id}`)
   };
 
+  const classes = "flex justify-around items-center gap-3 " + padding
+
   return (
-    <div className='flex justify-around p-5 items-center gap-3'>
+    <div className={classes}>
       <img 
         src="/search.png" 
         alt="Search icon" 

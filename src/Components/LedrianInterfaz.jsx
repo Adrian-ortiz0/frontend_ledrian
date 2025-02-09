@@ -9,6 +9,7 @@ import { SuggestionsSection } from './LedrianInterfazSubComponents/SuggestionsSe
 import { useUser } from '../UserContext';
 import { MobileFeed } from './Mobile/MobileFeed';
 import { SearchInput } from './LedrianInterfazSubComponents/SearchInput';
+import { NotificationButton } from './Mobile/NotificationIcon';
 
 
 export const LedrianInterfaz = () => {
@@ -24,12 +25,13 @@ export const LedrianInterfaz = () => {
         <SuggestionsSection usuario={usuario} />
       </section>
 
-      <section className='lg:hidden h-screen bg-gray-900'>
-        <div className='py-3'>
-        <SearchInput />
+      <section className='lg:hidden flex flex-col justify-between h-screen bg-gray-900'>
+        <div className='grid grid-cols-[5fr_1fr]'>
+          <SearchInput padding='p-3'/>
+          <NotificationButton usuario={usuario}/>
         </div>
-        <MobileNavBar/>
         <MobileFeed usuario={usuario} />
+        <MobileNavBar/>
       </section>
       </>
   )

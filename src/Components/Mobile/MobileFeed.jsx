@@ -3,7 +3,7 @@ import { FeedPostsMobile } from './MobileFeedPost'
 
 export const MobileFeed = ({usuario}) => {
   return (
-    <main className='flex flex-col w-screen fixed overflow-y-auto h-screen pb-[15vh]'>
+    <main className='flex flex-col w-screen overflow-y-auto h-screen'>
         <FeedPostsMobile usuario={usuario} />
     </main>
   )

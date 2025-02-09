@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
 
-const NavButton = ({ imagePath, altText, navigateTo, onClick, width = 24, height = 24 }) => {
+export const NavButton = ({ imagePath, altText, navigateTo, onClick, width = 24, height = 24 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -42,7 +42,7 @@ export const MobileNavBar = ({ usuario }) => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-gray-200 flex justify-around items-center p-2 z-50">
+    <div className="w-full bg-gray-800 text-gray-200 flex justify-around items-center p-2">
       <NavButton
         imagePath="/public/home_icon.png"
         altText="Home Icon"
