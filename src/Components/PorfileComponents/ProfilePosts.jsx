@@ -54,7 +54,7 @@ export const ProfilePosts = ({ usuario }) => {
 
   return (
 
-<section className="grid grid-cols-3 gap-2 px-2 py-3 md:px-5 md:py-6 place-items-center z-[1]">
+<section className="grid grid-cols-3 gap-2  py-3 md:px-5 md:py-6 place-items-center z-[1]">
       {ownPosts.length > 0 ? (
         ownPosts.map((post) => (
           <PostCard
