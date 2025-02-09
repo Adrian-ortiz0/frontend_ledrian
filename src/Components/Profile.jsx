@@ -19,10 +19,9 @@ export const Profile = () => {
         <ProfileFeed usuario={usuario} />
         <SuggestionsSection usuario={usuario} />
       </div>
-      <div className='lg:hidden'>
+      <div className='lg:hidden flex flex-col justify-between h-screen'>
       <ProfileFeed usuario={usuario} />
-
-      <MobileNavBar />
+      <MobileNavBar usuario={usuario}/>
       </div>
     </div>
   )

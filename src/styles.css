@@ -551,11 +551,10 @@
 
 .post{
   cursor: pointer;
-  border-radius: 15px;
 }
 
 .post img{
-  border-radius: 15px;
+  
 }
 
 /* Modal Post Profile Version Pc todo lo de la clase PostModalCardPc y PostCard */

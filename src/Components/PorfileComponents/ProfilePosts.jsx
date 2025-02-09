@@ -53,7 +53,7 @@ export const ProfilePosts = ({ usuario }) => {
 
 
   return (
-    <section className="profile_posts grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-h-[40vh] w-[90%] p-5 mx-auto mt-5 place-items-center z-[1] ">
+    <section className="grid grid-cols-3 gap-1 px-2 py-3 md:px-5 md:py-6">
       {ownPosts.length > 0 ? (
         ownPosts.map((post) => (
           <PostCard
@@ -64,11 +64,10 @@ export const ProfilePosts = ({ usuario }) => {
             date={post.date}
             interations={post.interations}
             postId={post.id}
-            
           />
         ))
       ) : (
-        <p>No hay publicaciones</p>
+        <p className='text-center p-6'>No hay publicaciones</p>
       )}
     </section>
   );

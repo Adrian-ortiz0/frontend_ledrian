@@ -30,8 +30,8 @@ export const LedrianInterfaz = () => {
           <SearchInput padding='p-3'/>
           <NotificationButton usuario={usuario}/>
         </div>
-        <MobileFeed usuario={usuario} />
-        <MobileNavBar/>
+        <Feed usuario={usuario} />
+        <MobileNavBar usuario={usuario}/>
       </section>
       </>
   )

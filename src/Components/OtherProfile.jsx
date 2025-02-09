@@ -55,11 +55,9 @@ export const OtherProfile = () => {
       <OtherProfileFeed usuario={selectedUser} otroUsuario={usuario} /> 
       <SuggestionsSection usuario={usuario} />
     </div>
-    <div className='lg:hidden'>
-    <OtherProfileFeed usuario={selectedUser} otroUsuario={usuario} /> 
-
-
-      <MobileNavBar />
+      <div className='lg:hidden flex flex-col justify-between h-screen'>
+      <OtherProfileFeed usuario={selectedUser} />
+      <MobileNavBar usuario={usuario}/>
       </div>
     </>
   );
