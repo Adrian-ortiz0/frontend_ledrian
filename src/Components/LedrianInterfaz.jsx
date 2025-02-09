@@ -1,13 +1,11 @@
 import React from 'react'
 import "../styles.css";
-import { HeaderNav } from './LedrianInterfazSubComponents/HeaderNav';
 import { AsideProfile } from './LedrianInterfazSubComponents/AsideProfile';
 import { MobileNavBar } from './Mobile/MobileAside';
 
 import { Feed } from './LedrianInterfazSubComponents/Feed';
 import { SuggestionsSection } from './LedrianInterfazSubComponents/SuggestionsSection';
 import { useUser } from '../UserContext';
-import { MobileFeed } from './Mobile/MobileFeed';
 import { SearchInput } from './LedrianInterfazSubComponents/SearchInput';
 import { NotificationButton } from './Mobile/NotificationIcon';
 

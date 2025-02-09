@@ -1,5 +1,4 @@
 import React from 'react'
-import { HeaderNav } from '../Components/LedrianInterfazSubComponents/HeaderNav'
 import { AsideProfile } from './LedrianInterfazSubComponents/AsideProfile'
 import { SuggestionsSection } from './LedrianInterfazSubComponents/SuggestionsSection'
 import { ProfileFeed } from './PorfileComponents/ProfileFeed'

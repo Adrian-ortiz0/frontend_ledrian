@@ -47,7 +47,7 @@ const NotificationsList = ({ onClose, usuario }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-[#00000094] z-50">
       <div className="bg-gradient-to-r from-purple-700 to-indigo-700 text-white w-full max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col">
         <div className="flex justify-between items-center border-b border-white pb-3">
           <h2 className="text-2xl font-bold">Notificaciones</h2>
