@@ -7,42 +7,37 @@ const API_URL = 'http://localhost:8083/api/notifications';
 const NotificationsList = ({ onClose, usuario }) => {
   const [notifications, setNotifications] = useState([]);
 
-  // Obtener todas las notificaciones (leídas y no leídas juntas)
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const noti = await getNotifications(usuario.id);
-        // Ordena las notificaciones por fecha de manera descendente
         const allNotifications = [...noti].sort((a, b) => new Date(b.date) - new Date(a.date));
-        setNotifications(allNotifications);  // Establece el estado de las notificaciones
+        setNotifications(allNotifications);
       } catch (error) {
         console.error('Error fetching notifications:', error);
       }
     };
 
     fetchNotifications();
-  }, [usuario.id]);  // Dependencia: vuelve a ejecutar si cambia el usuario
+  }, [usuario.id]);
 
-  // Obtener las notificaciones del backend
   const getNotifications = async (userId) => {
     try {
       const response = await axios.get(`${API_URL}/all/${userId}`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
       });
-      return response.data;  // Retorna la lista de notificaciones
+      return response.data;
     } catch (error) {
       console.error("Error fetching notifications:", error);
-      return [];  // Retorna un array vacío en caso de error
+      return [];
     }
   };
 
-  // Marcar todas las notificaciones como leídas
   const markAllNotificationsAsRead = async (userId) => {
     try {
       await axios.put(`${API_URL}/read-all/${userId}`, null, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
       });
-      // Actualiza todas las notificaciones en el estado como leídas
       setNotifications((prevNotifications) =>
         prevNotifications.map((notification) => ({ ...notification, checked: true }))
       );
@@ -52,21 +47,29 @@ const NotificationsList = ({ onClose, usuario }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
-      <div className="bg-gray-800 w-full max-w-md p-4 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center border-b pb-2">
-          <h2 className="text-lg font-semibold">Notificaciones</h2>
-          <button onClick={() => { markAllNotificationsAsRead(usuario.id); onClose(); }} className="text-red-500">Cerrar</button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+      <div className="bg-gradient-to-r from-purple-700 to-indigo-700 text-white w-full max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col">
+        <div className="flex justify-between items-center border-b border-white pb-3">
+          <h2 className="text-2xl font-bold">Notificaciones</h2>
+          <button onClick={() => { markAllNotificationsAsRead(usuario.id); onClose(); }} 
+                  className="text-white hover:text-gray-300 transition">
+            ✕
+          </button>
         </div>
-        <div className="mt-2 max-h-80 overflow-y-auto">
+        <div className="mt-4 space-y-3 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-600">
           {notifications.length > 0 ? (
             notifications.map(notification => (
               <NotificationItem key={notification.id} notification={notification} />
             ))
           ) : (
-            <p className="text-center text-gray-500">No hay notificaciones</p>
+            <p className="text-center text-gray-200 py-4">No hay notificaciones</p>
           )}
         </div>
+        <button 
+          onClick={() => markAllNotificationsAsRead(usuario.id)} 
+          className="mt-4 w-full py-3 bg-white text-indigo-700 hover:bg-gray-300 font-bold rounded-xl transition">
+          Marcar todas como leídas
+        </button>
       </div>
     </div>
   );
