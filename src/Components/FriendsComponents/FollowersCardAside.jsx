@@ -128,9 +128,9 @@ export const FollowersCardAside = ({ followerId }) => {
               sx={{ mx: 'auto' }}
             />
           ) : isFollowing ? (
-            'Dejar de seguir'
+            'Unfollow'
           ) : (
-            'Seguir'
+            'Follow'
           )}
         </Button>
       </div>
