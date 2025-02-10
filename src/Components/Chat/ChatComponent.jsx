@@ -32,7 +32,7 @@ const ChatComponent = ({ currentUser, recipientId }) => {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get('http://localhost:8083/api/chat/messages', {
+            const response = await axios.get('http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/chat/messages', {
                 params: {
                     senderId: currentUser.id,
                     recipientId: recipientId

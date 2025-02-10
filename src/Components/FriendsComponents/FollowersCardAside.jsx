@@ -80,7 +80,7 @@ export const FollowersCardAside = ({ followerId }) => {
 
   const profileImagePath = userInfo.photo?.startsWith("http")
     ? userInfo.photo
-    : `http://localhost:8083/api/publications/images/${userInfo.photo}`;
+    : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${userInfo.photo}`;
 
   return (
     <div className="bg-[#1e2939] rounded-xl shadow-md p-3 sm:p-4 w-full max-w-full sm:max-w-xs mx-auto mb-3 sm:mb-4 hover:shadow-lg transition-shadow duration-300">

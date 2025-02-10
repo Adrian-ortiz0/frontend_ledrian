@@ -5,8 +5,8 @@ let stompClient = null;
 
 export const connect = (callback, errorCallback) => {
     const socketUrl = window.location.protocol === 'https:' 
-        ? 'https://localhost:8083/ws' 
-        : 'http://localhost:8083/ws';
+        ? 'http://localhost:8080/ledrian-0.0.1-SNAPSHOT/ws' 
+        : 'http://localhost:8080/ledrian-0.0.1-SNAPSHOT/ws';
 
     const socket = new SockJS(socketUrl);
     stompClient = StompJs.Stomp.over(socket);
