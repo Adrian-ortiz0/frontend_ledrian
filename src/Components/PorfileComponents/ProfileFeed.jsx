@@ -6,11 +6,7 @@ import { ProfilePosts } from './ProfilePosts'
 export const ProfileFeed = ({usuario}) => {
   return (
     <>
-    <div className='hidden lg:flex flex-col w-[60vw] left-[15vw] fixed h-[100vh] overflow-y-auto'>
-      <ProfileBanner usuario={usuario} />
-      <ProfilePosts usuario={usuario} />
-    </div>
-    <div className='lg:hidden flex-col w-full fixed h-[94vh] overflow-y-auto'>
+    <div className='flex flex-col w-full overflow-y-auto'>
       <ProfileBanner usuario={usuario} />
       <ProfilePosts usuario={usuario} />
     </div>

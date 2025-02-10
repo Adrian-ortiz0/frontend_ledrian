@@ -1,19 +1,30 @@
-import React from "react";
-import { AsideProfile } from "../LedrianInterfazSubComponents/AsideProfile";
-import { HeaderNav } from "../LedrianInterfazSubComponents/HeaderNav";
+import React, { useState } from "react";
 import { ProfileEditForm } from "./ProfileEditForm";
-import { Suggestions } from "../LedrianInterfazSubComponents/Suggestions";
-import { SuggestionsSection } from "../LedrianInterfazSubComponents/SuggestionsSection";
 import { useUser } from "../../UserContext";
+import { useNavigate } from "react-router";
+
 
 export const ProfileEdit = () => {
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  
+  const navigate = useNavigate();
 
   const {usuario} = useUser();
 
+  const handleNoti = () => {
+    setIsNotificationOpen(true);
+  };
+
+  const handleNotiClose = () => {
+    setIsNotificationOpen(false);
+  };
+
   return (
     <>
-        <ProfileEditForm usuario={usuario} />
         {/*<SuggestionsSection usuario={usuario} />*/}
+        {isNotificationOpen && (
+        <ProfileEditForm usuario={usuario} onClose={handleNotiClose}/>
+      )}
         </>
   );
 };

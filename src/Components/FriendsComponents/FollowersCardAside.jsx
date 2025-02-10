@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import AxiosConfiguration from "../../AxiosConfiguration";
-import { useUser } from "../../UserContext";
-import { Button, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import AxiosConfiguration from '../../AxiosConfiguration';
+import { Button, CircularProgress, useMediaQuery } from '@mui/material';
+import { useUser } from '../../UserContext';
 
-export const FollowersCard = ({ followerId }) => {
+export const FollowersCardAside = ({ followerId }) => {
   const { usuario: loggedUser, actualizarUsuario } = useUser();
   const [userInfo, setUserInfo] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 640px)');
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -75,24 +76,28 @@ export const FollowersCard = ({ followerId }) => {
   };
 
   if (!userInfo)
-    return <div className="text-white p-4">Cargando...</div>;
+    return <div className="text-white p-2 sm:p-4">Cargando...</div>;
 
   const profileImagePath = userInfo.photo?.startsWith("http")
     ? userInfo.photo
-    : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${userInfo.photo}`;
+    : `http://localhost:8083/api/publications/images/${userInfo.photo}`;
 
   return (
-    <div className="bg-[#1e2939] rounded-2xl shadow-lg p-5 w-full max-w-md mx-auto mb-6 hover:shadow-2xl">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+    <div className="bg-[#1e2939] rounded-xl shadow-md p-3 sm:p-4 w-full max-w-full sm:max-w-xs mx-auto mb-3 sm:mb-4 hover:shadow-lg transition-shadow duration-300">
+      <div className="flex items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
           <img
             src={profileImagePath || "/default-profile.png"}
             alt={userInfo.username}
-            className="w-16 h-16 rounded-full object-cover border-2 border-gray-600 hover:border-gray-400 transition-colors"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border border-gray-600 hover:border-gray-400 transition-colors flex-shrink-0"
           />
-          <div>
-            <p className="text-white font-bold text-xl">{userInfo.name}</p>
-            <p className="text-gray-300 text-sm">@{userInfo.username}</p>
+          <div className="min-w-0">
+            <p className="text-white font-semibold text-sm sm:text-base truncate">
+              {userInfo.name}
+            </p>
+            <p className="text-gray-300 text-xs sm:text-sm truncate">
+              @{userInfo.username}
+            </p>
           </div>
         </div>
 
@@ -103,23 +108,29 @@ export const FollowersCard = ({ followerId }) => {
           disabled={isLoading}
           sx={{
             textTransform: "none",
-            fontSize: "0.9rem",
-            borderRadius: "12px",
-            px: 3,
-            py: 1,
+            fontSize: isMobile ? '0.6rem' : '0.75rem',
+            borderRadius: "8px",
+            px: isMobile ? 1 : 1.5,
+            py: 0.5,
+            minWidth: isMobile ? '75px' : '85px',
             boxShadow: "none",
-            transition: "all 0.3s",
-            "&:hover": {
-              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
+            transition: "all 0.3s ease",
+            '&:hover': {
+              transform: 'translateY(-1px)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
             },
           }}
         >
           {isLoading ? (
-            <CircularProgress size={22} color="inherit" />
+            <CircularProgress 
+              size={isMobile ? 16 : 18} 
+              color="inherit" 
+              sx={{ mx: 'auto' }}
+            />
           ) : isFollowing ? (
-            "Unfollow"
+            'Unfollow'
           ) : (
-            "Follow"
+            'Follow'
           )}
         </Button>
       </div>

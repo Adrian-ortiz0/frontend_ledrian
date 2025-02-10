@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AxiosConfiguration = axios.create({
-    baseURL: "http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/",
+    baseURL: "http://localhost:8083/api/",
 });
 
 axios.interceptors.request.use((config) => {

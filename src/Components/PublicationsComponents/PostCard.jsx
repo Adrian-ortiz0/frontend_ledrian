@@ -25,11 +25,12 @@ export const PostCard = ({ img, description, username, date, interations, postId
         postId={postId}
       />
     )}
-      <div className="post_card">
-        <button className="post" onClick={openModal}>
-          <img src={img} alt={description} />
-        </button>
-      </div>
+<div className="flex justify-center overflow-y-scroll items-center w-full h-full">
+  <button className="w-full cursor-pointer h-full flex justify-center items-center" onClick={openModal}>
+    <img src={img} alt={description} className="w-full h-full object-cover" />
+  </button>
+</div>
+
 
     </>
   );

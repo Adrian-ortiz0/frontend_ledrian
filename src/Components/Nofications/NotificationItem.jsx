@@ -2,10 +2,16 @@ import { format } from 'date-fns';
 
 const NotificationItem = ({ notification }) => {
   return (
-    <div className={`p-4 border-b last:border-none ${notification.checked ? 'bg-gray-100' : 'bg-white'}`}>
-      <p className="text-sm text-gray-500">{format(new Date(notification.date), 'PPpp')}</p>
-      <p className="font-medium">{notification.content}</p>
-    </div>
+<div className={`flex items-start gap-4 p-4 rounded-lg shadow-md border 
+                ${notification.checked ? 'bg-gray-700 text-gray-300' : 'bg-white text-gray-800'}`}>
+  <div className={`w-3 h-3 rounded-full ${notification.checked ? 'bg-gray-500' : 'bg-green-500'}`} />
+  <div className="flex-1 max-w-full whitespace-pre-wrap break-words">
+    <p className="text-xs text-gray-400">{format(new Date(notification.date), 'PPpp')}</p>
+    <p className="font-semibold pr-3">{notification.content}</p>
+    <p className="text-xs text-gray-500">Type: {notification.type}</p>
+  </div>
+</div>
+
   );
 };
 

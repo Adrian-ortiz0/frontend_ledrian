@@ -48,7 +48,6 @@ export const FriendsCard = ({ usuario }) => {
           ...loggedUser,
           followingIds: loggedUser.followingIds.filter((id) => id !== usuario.id),
         });
-        alert("¡Has dejado de seguir al usuario!");
       } else {
         await AxiosConfiguration.post(
           "/follows",
@@ -64,7 +63,6 @@ export const FriendsCard = ({ usuario }) => {
           ...loggedUser,
           followingIds: Array.from(new Set([...loggedUser.followingIds, usuario.id])),
         });
-        alert("¡Usuario seguido con éxito!");
       }
     } catch (error) {
       console.error("Error al seguir/dejar de seguir:", error);
@@ -75,31 +73,32 @@ export const FriendsCard = ({ usuario }) => {
   };
 
   if (!userInfo) {
-    return <p className="text-white text-center p-4">Cargando...</p>;
+    return <div className="text-white p-4">Cargando...</div>;
   }
 
-  // Construir la URL de la imagen de perfil
   const profileImagePath = userInfo.photo?.startsWith("http")
     ? userInfo.photo
     : `http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/publications/images/${userInfo.photo}`;
 
   return (
-    <div className="bg-[#1e2939] rounded-2xl shadow-lg p-6 w-full max-w-md mx-auto mb-6 transition-transform transform hover:scale-105 hover:shadow-2xl">
-      <div className="flex flex-col items-center">
-        <img
-          src={profileImagePath || "/public/profile_icon.png"}
-          alt={userInfo.username}
-          className="w-24 h-24 rounded-full object-cover border-4 border-gray-500 shadow-md transition-all hover:border-gray-400"
-        />
-        <h2 className="text-white text-xl font-bold mt-4">{userInfo.name}</h2>
-        <p className="text-gray-300 text-sm">@{userInfo.username}</p>
-      </div>
+    <div className="bg-[#1e2939] rounded-2xl shadow-lg p-5 w-full max-w-md mx-auto mb-6 hover:shadow-2xl transition-shadow">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <img
+            src={profileImagePath || "/default-profile.png"}
+            alt={userInfo.username}
+            className="w-16 h-16 rounded-full object-cover border-2 border-gray-600 hover:border-gray-400 transition-colors"
+          />
+          <div>
+            <p className="text-white font-bold text-xl">{userInfo.name}</p>
+            <p className="text-gray-300 text-sm">@{userInfo.username}</p>
+          </div>
+        </div>
 
-      <div className="mt-4 flex justify-center">
         <Button
+          onClick={handleFollow}
           variant="contained"
           color={isFollowing ? "error" : "primary"}
-          onClick={handleFollow}
           disabled={isLoading}
           sx={{
             textTransform: "none",
@@ -107,15 +106,15 @@ export const FriendsCard = ({ usuario }) => {
             borderRadius: "12px",
             px: 3,
             py: 1,
-            transition: "all 0.3s",
             boxShadow: "none",
+            transition: "all 0.3s",
             "&:hover": {
               boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
             },
           }}
         >
           {isLoading ? (
-            <CircularProgress size={24} color="inherit" />
+            <CircularProgress size={22} color="inherit" />
           ) : isFollowing ? (
             "Unfollow"
           ) : (

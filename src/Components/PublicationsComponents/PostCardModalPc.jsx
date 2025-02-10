@@ -75,6 +75,7 @@ export const PostCardModalPc = ({
             userGivingId: usuario.id,
             userReceivingId: usuario.id,
             typeInterationId: 1,
+            username: usuario.username
           },
           {
             headers: { Authorization: `Bearer ${authToken}` },
@@ -111,6 +112,7 @@ export const PostCardModalPc = ({
       userGiving: usuario,
       publicationId: postId,
       typeInterationId: 2,
+      username: usuario.username
     };
 
     setCommentsList((prev) => [tempComment, ...prev]);
@@ -124,6 +126,7 @@ export const PostCardModalPc = ({
         typeInterationId: 2,
         date: new Date().toISOString(),
         comment: tempComment.comment,
+        username: usuario.username
       };
 
       await AxiosConfiguration.post("interations", payload, {
@@ -201,6 +204,8 @@ export const PostCardModalPc = ({
     year: "numeric",
   });
 
+  console.log(commentsList)
+
   return (
     <>
       <div
@@ -208,7 +213,7 @@ export const PostCardModalPc = ({
         onClick={onClose}
       >
         <div
-          className="relative bg-white rounded-lg w-[100vw] max-w-5xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
+          className="relative bg-white rounded-lg w-[90vw] max-w-5xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
           onClick={(e) => e.stopPropagation()}
         >
           <button
@@ -218,15 +223,15 @@ export const PostCardModalPc = ({
             &times;
           </button>
 
-          <div className="flex-1 bg-black flex items-center justify-center p-4">
+          <div className="flex-1 overflow-y-scroll bg-black flex items-center justify-center p-4">
             <img
               src={img}
               alt={description}
-              className="max-w-full max-h-[80vh] object-contain"
+              className="max-w-full max-h-[50vh] md:max-h-[80vh] object-contain"
             />
           </div>
 
-          <div className="flex-1 flex flex-col w-full md:w-[400px]">
+          <div className="flex-1 flex flex-col w-full overflow-y-scroll md:w-[400px]">
             <div className="flex items-center p-4 border-b">
               <Avatar src="/default-avatar.jpg" alt={username} />
               <Typography variant="subtitle1" className="ml-2 font-semibold">
@@ -253,7 +258,7 @@ export const PostCardModalPc = ({
               </Menu>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4">
+            <div className="flex-1 overflow-y-scroll p-4" style={{ maxHeight: '40vh' }}>
               <div className="mb-4">
                 <Typography variant="body1" className="font-semibold">
                   {username}
@@ -270,15 +275,17 @@ export const PostCardModalPc = ({
                 commentsList.map((comment) => (
                   <div key={comment.id || comment.tempId} className="mb-4">
                     <Typography variant="body1" className="font-semibold">
-                      {comment.userGiving?.username || "Usuario"}
+                      {comment.username || "Usuario"}
                     </Typography>
-                    <Typography variant="body2" className="text-gray-700">
+                    <Typography variant="body2" className="text-gray-700 max-w-full whitespace-pre-wrap break-words">
                       {comment.comment}
                     </Typography>
+
                     <Typography
                       variant="caption"
                       className="text-gray-500 block mt-1"
                     >
+
                       {new Date(comment.date).toLocaleString("es-ES", {
                         day: "2-digit",
                         month: "short",
@@ -328,7 +335,9 @@ export const PostCardModalPc = ({
                   className="flex-1 outline-none"
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
+                  maxLength={300}
                 />
+
                 <button
                   className="text-blue-500 font-semibold ml-2"
                   onClick={handleCommentSubmit}

@@ -53,7 +53,7 @@ const CommentsModal = ({
     const normalizedComments = (existingComments || []).map((comment) => ({
       ...comment,
       userGiving: comment.userGiving || { id: comment.userGivingId },
-      username:  usuario.username ||"Usuario desconocido",
+      username:  comment.username ||"Usuario desconocido",
     }));
     setCommentsList(normalizedComments);
   }, [existingComments]);
@@ -209,6 +209,7 @@ const CommentsModal = ({
     }
   };
 
+
   return (
     <Modal
       open={open}
@@ -321,7 +322,7 @@ const CommentsModal = ({
                       sx={{ color: "white", fontWeight: 500 }}
                     >
                       {commentItem.username ||
-                        (commentItem.userGiving && commentItem.userGiving.username) ||
+                        
                         "Usuario desconocido"}
                     </Typography>
                   </Box>

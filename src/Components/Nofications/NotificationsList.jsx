@@ -2,124 +2,74 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import NotificationItem from './NotificationItem';
 
-const API_URL = 'http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/notifications';
+const API_URL = 'http://localhost:8083/api/notifications';
 
 const NotificationsList = ({ onClose, usuario }) => {
-  const API_URL = 'http://localhost:8080/ledrian-0.0.1-SNAPSHOT/api/notifications';
+  const [notifications, setNotifications] = useState([]);
 
-// Estado para las notificaciones
-const [notifications, setNotifications] = useState([]);
-const [notification, setNotification] = useState(null);
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const noti = await getNotifications(usuario.id);
+        const allNotifications = [...noti].sort((a, b) => new Date(b.date) - new Date(a.date));
+        setNotifications(allNotifications);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
 
-// Obtención de todas las notificaciones (leídas y no leídas juntas)
-useEffect(() => {
-  const fetchNotifications = async () => {
+    fetchNotifications();
+  }, [usuario.id]);
+
+  const getNotifications = async (userId) => {
     try {
-      const unread = await getUnseenNotifications(usuario.id);
-      const read = await getReadNotifications(usuario.id);
-      // Unir ambas listas y ordenarlas por fecha (descendente)
-      const allNotifications = [...unread, ...read].sort((a, b) => new Date(b.date) - new Date(a.date));
-      setNotifications(allNotifications);
+      const response = await axios.get(`${API_URL}/all/${userId}`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+      });
+      return response.data;
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      console.error("Error fetching notifications:", error);
+      return [];
     }
   };
 
-  fetchNotifications();
-}, [usuario.id]);
+  const markAllNotificationsAsRead = async (userId) => {
+    try {
+      await axios.put(`${API_URL}/read-all/${userId}`, null, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+      });
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) => ({ ...notification, checked: true }))
+      );
+    } catch (error) {
+      console.error("Error marking all notifications as read:", error);
+    }
+  };
 
-// Obtener notificaciones no leídas
-const getUnseenNotifications = async (userId) => {
-  try {
-    const response = await axios.get(`${API_URL}/unread/${userId}`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching unread notifications:", error);
-    return [];
-  }
-};
-
-// Obtener notificaciones leídas
-const getReadNotifications = async (userId) => {
-  try {
-    const response = await axios.get(`${API_URL}/read/${userId}`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching read notifications:", error);
-    return [];
-  }
-};
-
-// Marcar una notificación como leída
-const markNotificationAsRead = async (notificationId) => {
-  try {
-    await axios.put(`${API_URL}/read/${notificationId}`, null, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
-    });
-    // Actualizar el estado
-    setNotifications(notifications.map(n => n.id === notificationId ? { ...n, checked: true } : n));
-  } catch (error) {
-    console.error("Error marking notification as read:", error);
-  }
-};
-
-// Marcar todas como leídas al cerrar el modal
-const markAllNotificationsAsRead = async (userId) => {
-  try {
-    await axios.put(`${API_URL}/read-all/${userId}`, null, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
-    });
-    // Marcar todas como leídas en el estado
-    setNotifications(notifications.map(n => ({ ...n, checked: true })));
-  } catch (error) {
-    console.error("Error marking all notifications as read:", error);
-  }
-};
-
-// Obtener una notificación por su ID
-const getNotificationById = async (notificationId) => {
-  try {
-    const response = await axios.get(`${API_URL}/${notificationId}`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
-    });
-    setNotification(response.data);
-  } catch (error) {
-    console.error("Error fetching notification by ID:", error);
-  }
-};
-
-// Crear una nueva notificación
-const createNotification = async (notificationData) => {
-  try {
-    const response = await axios.post(API_URL, notificationData, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
-    });
-    // Agregar la nueva notificación a la lista
-    setNotifications([response.data, ...notifications]);
-  } catch (error) {
-    console.error("Error creating notification:", error);
-  }
-};
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white w-full max-w-md p-4 rounded-lg shadow-lg">
-        <div className="flex justify-between items-center border-b pb-2">
-          <h2 className="text-lg font-semibold">Notificaciones</h2>
-          <button onClick={() => { markAllNotificationsAsRead(usuario.id); onClose(); }} className="text-red-500">Cerrar</button>
+    <div className="fixed inset-0 flex items-center justify-center bg-[#00000094] z-50">
+      <div className="bg-gradient-to-r from-purple-700 to-indigo-700 text-white w-full max-w-md p-6 rounded-3xl shadow-2xl relative flex flex-col">
+        <div className="flex justify-between items-center border-b border-white pb-3">
+          <h2 className="text-2xl font-bold">Notificaciones</h2>
+          <button onClick={() => { markAllNotificationsAsRead(usuario.id); onClose(); }} 
+                  className="text-white hover:text-gray-300 transition">
+            ✕
+          </button>
         </div>
-        <div className="mt-2 max-h-80 overflow-y-auto">
+        <div className="mt-4 space-y-3 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-600">
           {notifications.length > 0 ? (
             notifications.map(notification => (
               <NotificationItem key={notification.id} notification={notification} />
             ))
           ) : (
-            <p className="text-center text-gray-500">No hay notificaciones</p>
+            <p className="text-center text-gray-200 py-4">No hay notificaciones</p>
           )}
         </div>
+        <button 
+          onClick={() => markAllNotificationsAsRead(usuario.id)} 
+          className="mt-4 w-full py-3 bg-white text-indigo-700 hover:bg-gray-300 font-bold rounded-xl transition">
+          Marcar todas como leídas
+        </button>
       </div>
     </div>
   );

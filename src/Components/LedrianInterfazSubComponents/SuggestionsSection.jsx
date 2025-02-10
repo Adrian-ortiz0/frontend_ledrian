@@ -7,9 +7,9 @@ import { useNavigate } from "react-router";
 export const SuggestionsSection = ({usuario}) => {
 
   return (
-    <section className="w-[25vw] h-[100vh] fixed right-0 flex flex-col justify-start gap-9 items-center bg-gray-800 pt-8">
+    <section className="h-[100vh] flex flex-col justify-start gap-9 items-center bg-gray-800 pt-8">
       <SearchInput />
-      <Stories />
+      {/* <Stories /> */}
       <Suggestions />
     </section>
   );

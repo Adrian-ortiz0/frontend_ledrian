@@ -3,24 +3,41 @@ import { useNavigate } from "react-router";
 import { CreateModal } from "../CreateModal";
 import { ProfilePhotoUpdate } from "./ProfilePhotoUpdate";
 import { useUser } from "../../UserContext";
+import { LogOutButton } from '../Mobile/LogOutIcon'
+import { ProfileEditForm } from "./ProfileEditForm";
+
 
 export const ProfileBanner = () => {
   const navigate = useNavigate();
   const { usuario } = useUser();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+    
 
   if (!usuario) return null; 
 
   const handleOpenModal = () => setIsCreateModalOpen(true);
   const handleCloseModal = () => setIsCreateModalOpen(false);
 
+  const handleNoti = () => {
+    setIsNotificationOpen(true);
+  };
+
+  const handleNotiClose = () => {
+    setIsNotificationOpen(false);
+  };
+
   return (
     <div className="w-full flex flex-col items-center">
       <div
-        className="w-full h-40 sm:h-56 md:h-64 lg:h-50 bg-gray-700 bg-cover bg-center"
+        className="w-full hidden h-40 sm:flex sm:h-30 md:h-34 lg:h-35 bg-gray-700 bg-cover bg-center"
         style={{ backgroundImage: `url(${usuario.banner})` }}
       ></div>
 
+        <div></div>
+              <div className='absolute right-4 lg:hidden'>
+              <LogOutButton/>
+              </div>
       <div className="w-full gap-7 max-w-4xl bg-gray-100 rounded-lg shadow-md -mt-16 p-6 flex flex-col items-center">
         <ProfilePhotoUpdate />
 
@@ -58,7 +75,7 @@ export const ProfileBanner = () => {
 
         <div className="flex gap-4 mt-6">
           <button
-            onClick={() => navigate("edit")}
+            onClick={handleNoti}
             className="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600 transition duration-300"
           >
             Edit Profile
@@ -74,6 +91,9 @@ export const ProfileBanner = () => {
 
       {isCreateModalOpen && (
         <CreateModal onClose={handleCloseModal} usuario={usuario} />
+      )}
+              {isNotificationOpen && (
+        <ProfileEditForm usuario={usuario} onClose={handleNotiClose}/>
       )}
     </div>
   );
