@@ -4,12 +4,12 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router';
 import { useUser } from '../../UserContext';
-import { 
-  Dialog, 
-  DialogContent, 
-  TextField, 
-  Button, 
-  IconButton, 
+import {
+  Dialog,
+  DialogContent,
+  TextField,
+  Button,
+  IconButton,
   Typography,
   Grid,
   Box
@@ -18,7 +18,7 @@ import { Close, Save, Cancel } from '@mui/icons-material';
 
 export const ProfileEditForm = ({ usuario, onClose }) => {
   const navigate = useNavigate();
-  const { actualizarUsuario } = useUser(); 
+  const { actualizarUsuario } = useUser();
 
   if (!usuario?.id) {
     toast.error("Error: Usuario no válido");
@@ -149,7 +149,6 @@ export const ProfileEditForm = ({ usuario, onClose }) => {
                 InputLabelProps={{ sx: { color: '#9CA3AF' } }}
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -160,6 +159,7 @@ export const ProfileEditForm = ({ usuario, onClose }) => {
                 onChange={handleChange}
                 variant="filled"
                 InputProps={{
+                  readOnly: true,
                   sx: {
                     color: 'white',
                     bgcolor: '#374151',
@@ -171,6 +171,7 @@ export const ProfileEditForm = ({ usuario, onClose }) => {
               />
             </Grid>
 
+
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -180,6 +181,7 @@ export const ProfileEditForm = ({ usuario, onClose }) => {
                 onChange={handleChange}
                 variant="filled"
                 InputProps={{
+                  readOnly: true,
                   sx: {
                     color: 'white',
                     bgcolor: '#374151',
@@ -190,6 +192,7 @@ export const ProfileEditForm = ({ usuario, onClose }) => {
                 InputLabelProps={{ sx: { color: '#9CA3AF' } }}
               />
             </Grid>
+
 
             <Grid item xs={12}>
               <TextField
