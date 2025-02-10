@@ -3,6 +3,12 @@
   margin: 0;
 }
 
+@media (max-width: 640px) {
+  .sm\:w-1\/4 {
+      width: 100%;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

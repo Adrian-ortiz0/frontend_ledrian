@@ -277,15 +277,15 @@ export const PostCardModalPc = ({
                     <Typography variant="body1" className="font-semibold">
                       {comment.username || "Usuario"}
                     </Typography>
-                    <Typography variant="body2" className="text-gray-700">
+                    <Typography variant="body2" className="text-gray-700 max-w-full whitespace-pre-wrap break-words">
                       {comment.comment}
                     </Typography>
-                    
+
                     <Typography
                       variant="caption"
                       className="text-gray-500 block mt-1"
                     >
-                      
+
                       {new Date(comment.date).toLocaleString("es-ES", {
                         day: "2-digit",
                         month: "short",
@@ -335,7 +335,9 @@ export const PostCardModalPc = ({
                   className="flex-1 outline-none"
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
+                  maxLength={300}
                 />
+
                 <button
                   className="text-blue-500 font-semibold ml-2"
                   onClick={handleCommentSubmit}

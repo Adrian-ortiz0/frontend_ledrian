@@ -25,7 +25,7 @@ const ChatComponent = ({ currentUser, recipientId }) => {
         connect(onConnected, onError);
 
         return () => {
-            clearInterval(intervalId); 
+            clearInterval(intervalId);
             setIsConnected(false);
         };
     }, [currentUser, recipientId]);
@@ -72,35 +72,37 @@ const ChatComponent = ({ currentUser, recipientId }) => {
 
     return (
         <>
-            <div className="flex flex-col gap-1 overflow-y-auto p-4">
+            <div className="flex flex-col gap-2 overflow-y-auto p-4 flex-1">
                 {messages.map((message, index) => (
-                    <div key={index} className={`flex items-start ${message.senderId === currentUser.id ? 'justify-end' : ''}`}>
+                    <div key={index} className={`flex items-start  ${message.senderId === currentUser.id ? 'justify-end' : ''}`}>
                         {message.senderId !== currentUser.id && (
                             <img src={message.senderPhoto || 'default-avatar.png'} alt="Profile" className="w-8 h-8 rounded-full" />
                         )}
-                        <div className={`${message.senderId === currentUser.id ? 'bg-purple-500  text-white rounded-lg shadow-lg text-center' : 'bg-pink-500'} p-3 rounded-lg max-w-[70%]`}>
+                        <div className={`${message.senderId === currentUser.id ? 'bg-purple-500 text-white' : 'bg-gray-700 text-white'} p-3 rounded-lg max-w-[70%] break-words`}>
                             <p className="text-sm">{message.content}</p>
+                            <p className="text-xs text-gray-300 mt-1">
+                                {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
                         </div>
                     </div>
                 ))}
             </div>
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-gray-700">
                 {isConnected ? (
                     <div className="flex items-center">
                         <input
                             type="text"
                             placeholder="Escribe un mensaje..."
-                            className="flex-1 p-2 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
+                            className="flex-1 p-2 border border-gray-600 rounded-full bg-gray-700 text-white focus:outline-none focus:border-purple-500"
                             value={messageContent}
                             onChange={(e) => setMessageContent(e.target.value)}
                             onKeyPress={(e) => {
                                 if (e.key === 'Enter') handleSendMessage();
                             }}
                         />
-                        <button onClick={handleSendMessage} className="ml-2 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600">
+                        <button onClick={handleSendMessage} className="ml-2 p-2 bg-purple-500 text-white rounded-full hover:bg-purple-600">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 9.172a4 4 0 10-5.656 5.656" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7h-1.586a2 2 0 00-1.414.586l-1.828 1.828" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                         </button>
                     </div>
